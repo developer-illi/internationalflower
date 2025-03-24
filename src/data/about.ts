@@ -12,8 +12,8 @@ import {
 
 export const BASE_INFORMATION_DATA: BaseInformationResponse = {
   name: '사단법인 국제꽃예술인협회',
-  instagram: 'https://www.instagram.com/',
-  blog: 'https://blog.naver.com',
+  instagram: 'https://www.instagram.com/if_international_florist_a/',
+  blog: 'https://blog.naver.com/ifa2002',
   address: '(02880) 서울특별시 성북구 성북로5길 37-2 (성북동1가)',
 }
 
