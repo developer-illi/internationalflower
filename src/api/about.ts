@@ -35,7 +35,7 @@ export async function getGreeting(): Promise<Greeting> {
   const response = await baseFetcher<GreetingResponse>('/api/greeting')
   return mapGreetingResponseToGreeting(response)
 }
-
+//수정 해야하는 부분
 export async function getHistory(): Promise<HistorySection[]> {
   const response = await baseFetcher<HistoryResponse[]>('/api/history')
   return response.map((history) =>

@@ -1,4 +1,4 @@
-// File: C:\Users\jin\project\internation\internationalflower\src\app\(main)\layout.tsx
+// File: /Users/kim/deploy/interflower/internationalflower/src/app/(main)/layout.tsx
 import * as entry from '../../../../src/app/(main)/layout.js'
 import type { ResolvingMetadata, ResolvingViewport } from 'next/dist/lib/metadata/types/metadata-interface.js'
 

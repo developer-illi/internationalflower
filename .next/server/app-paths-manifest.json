@@ -1,5 +1,5 @@
 {
-  "/(api)/api/contact-information/route": "app/(api)/api/contact-information/route.js",
-  "/(api)/api/base-information/route": "app/(api)/api/base-information/route.js",
-  "/(main)/contact/page": "app/(main)/contact/page.js"
+  "/(main)/about/history/page": "app/(main)/about/history/page.js",
+  "/(main)/about/greeting/page": "app/(main)/about/greeting/page.js",
+  "/(main)/page": "app/(main)/page.js"
 }

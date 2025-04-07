@@ -16,20 +16,50 @@
       "static/chunks/main-app.js",
       "static/chunks/app/(main)/layout.js"
     ],
-    "/(main)/contact/page": [
+    "/(main)/page": [
       "static/chunks/webpack.js",
       "static/chunks/main-app.js",
-      "static/chunks/app/(main)/contact/page.js"
+      "static/chunks/app/(main)/page.js"
+    ],
+    "/(api)/api/notice/route": [
+      "static/chunks/webpack.js",
+      "static/chunks/main-app.js",
+      "static/chunks/app/(api)/api/notice/route.js"
     ],
     "/(api)/api/base-information/route": [
       "static/chunks/webpack.js",
       "static/chunks/main-app.js",
       "static/chunks/app/(api)/api/base-information/route.js"
     ],
-    "/(api)/api/contact-information/route": [
+    "/(api)/api/news/route": [
       "static/chunks/webpack.js",
       "static/chunks/main-app.js",
-      "static/chunks/app/(api)/api/contact-information/route.js"
+      "static/chunks/app/(api)/api/news/route.js"
+    ],
+    "/_not-found/page": [
+      "static/chunks/webpack.js",
+      "static/chunks/main-app.js",
+      "static/chunks/app/_not-found/page.js"
+    ],
+    "/(main)/about/greeting/page": [
+      "static/chunks/webpack.js",
+      "static/chunks/main-app.js",
+      "static/chunks/app/(main)/about/greeting/page.js"
+    ],
+    "/(api)/api/greeting/route": [
+      "static/chunks/webpack.js",
+      "static/chunks/main-app.js",
+      "static/chunks/app/(api)/api/greeting/route.js"
+    ],
+    "/(main)/about/history/page": [
+      "static/chunks/webpack.js",
+      "static/chunks/main-app.js",
+      "static/chunks/app/(main)/about/history/page.js"
+    ],
+    "/(api)/api/history/route": [
+      "static/chunks/webpack.js",
+      "static/chunks/main-app.js",
+      "static/chunks/app/(api)/api/history/route.js"
     ]
   }
 }

@@ -1,4 +1,4 @@
-// File: C:\Users\jin\project\internation\internationalflower\src\app\(api)\api\base-information\route.ts
+// File: /Users/kim/deploy/interflower/internationalflower/src/app/(api)/api/base-information/route.ts
 import * as entry from '../../../../../../src/app/(api)/api/base-information/route.js'
 import type { NextRequest } from 'next/server.js'
 
