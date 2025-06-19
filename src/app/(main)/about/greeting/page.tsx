@@ -13,7 +13,6 @@ export async function generateMetadata(): Promise<Metadata> {
 
 export default async function Greeting() {
   const greeting = await getGreeting().catch(() => null)
-
   if (!greeting) {
     return null
   }
@@ -58,5 +57,6 @@ export default async function Greeting() {
         </div>
       </article>
     </section>
+
   )
 }

@@ -6,6 +6,7 @@ import Pagination from '@/components/pagination/Pagination'
 import GalleryModal from '@/components/modal/GalleryModal'
 import ControllableCarousel from '@/components/carousel/ControllableCarousel'
 import DraggableCarousel from '@/components/carousel/DraggableCarousel'
+import DomesticImgAdd from '@/components/admin/business/domestic/DomesticImgAdd'
 import GalleryCard from '@/components/card/GalleryCard'
 import { Exhibition, GalleryItem } from '@/types/business'
 import { useState } from 'react'
@@ -14,17 +15,18 @@ import { motion } from 'framer-motion'
 
 interface ExhibitionsPaginationProps {
   data: Exhibition
+  isLoggedIn: boolean
+  type : string
 }
 
-const ExhibitionsPagination = ({ data }: ExhibitionsPaginationProps) => {
+const ExhibitionsPagination = ({ data, isLoggedIn, type }: ExhibitionsPaginationProps) => {
+
   const [isModalOpen, setIsModalOpen] = useState(false)
   const [selectedItem, setSelectedItem] = useState<GalleryItem | null>(null)
-
   const handleCardClick = (item: GalleryItem) => {
     setSelectedItem(item)
     setIsModalOpen(true)
   }
-
   return (
     <>
       <motion.div
@@ -33,6 +35,7 @@ const ExhibitionsPagination = ({ data }: ExhibitionsPaginationProps) => {
         transition={{ duration: 0.8, delay: 0.4 }}
         className="py-8 flex flex-col gap-y-10 md:gap-y-14"
       >
+
         <TitleWithContent
           title={data.title}
           subTitle={data.subTitle}
@@ -45,13 +48,12 @@ const ExhibitionsPagination = ({ data }: ExhibitionsPaginationProps) => {
           imageUrls={data.mainImageList}
           className="w-full hidden md:flex"
         />
-
         {/* Mobile Carousel */}
         <DraggableCarousel className="block md:hidden">
           {data.mainImageList.map((url) => (
             <Image
-              key={url}
-              src={url}
+              key={url.startsWith('/') ? url : `/${url}`}
+              src={url.startsWith('/') ? url : `/${url}`}  // 앞에 "/" 없으면 붙이기
               alt=""
               width={500}
               height={500}
@@ -59,8 +61,7 @@ const ExhibitionsPagination = ({ data }: ExhibitionsPaginationProps) => {
             />
           ))}
         </DraggableCarousel>
-
-        <Pagination>
+        <Pagination fixedTop={isLoggedIn ? <DomesticImgAdd id={data.id} type={type} /> : undefined}>
           {data.galleryList.map((item) => (
             <GalleryCard
               key={item.id}

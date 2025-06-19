@@ -6,6 +6,8 @@ import ExhibitionsPagination from '@/components/pagination/ExhibitionsPagination
 import { getExhibition } from '@/api/business'
 import { Exhibition } from '@/types/business'
 import { Metadata } from 'next'
+import { cookies } from 'next/headers'
+import International_modal from '@/components/admin/business/international/InternationalAddBtn'
 
 interface InternationalExhibitionsProps {
   searchParams: Promise<{
@@ -31,11 +33,14 @@ export async function generateStaticParams() {
 }
 
 export default async function InternationalExhibitions({
-  searchParams,
-}: InternationalExhibitionsProps) {
+                                                         searchParams,
+                                                       }: InternationalExhibitionsProps) {
+  const cookieStore = await cookies()
+  const authToken = cookieStore.get('auth_token')
+  const isLoggedIn = authToken?.value === 'authenticated'
   const exhibitionData = await getExhibition('international').catch(() => [])
   const tabList = exhibitionData.map((exhibition) => exhibition.title)
-
+  const type = 'international'
   const { tab } = await searchParams
   const activeTab = tab ?? tabList[0]
   const activeTabData =
@@ -56,12 +61,13 @@ export default async function InternationalExhibitions({
         <FadeInSection>
           <Breadcrumb path={['주요사업', '해외전시행사']} />
         </FadeInSection>
-
+        {isLoggedIn && (
+          <International_modal />
+        )}
         <FadeInSection delay={1}>
           <TabBar activeTab={activeTab} tabList={tabList} />
         </FadeInSection>
-
-        <ExhibitionsPagination data={activeTabData} />
+        <ExhibitionsPagination data={activeTabData} isLoggedIn={isLoggedIn} type={type}/>
       </div>
     </section>
   )

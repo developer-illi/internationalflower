@@ -1,0 +1,8 @@
+User-Agent: *
+Allow: /
+Disallow: /login
+Disallow: /api/
+Disallow: /_next/
+Disallow: /resources/
+
+Sitemap: https://i-fa.or.kr/sitemap.xml

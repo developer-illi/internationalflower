@@ -1,4 +1,6 @@
 // Footer
+// import { m } from 'framer-motion/dist/types.d-B50aGbjN'
+
 export interface BaseInformation {
   name: string
   instagram: string
@@ -32,33 +34,70 @@ export interface Greeting {
 // 연혁
 export interface HistorySection {
   id: number
+  contents: Content[] // ← 배열 명 변경 필요
+  type: 'information' | 'history' | string // 혹은 그냥 string
   title: string
-  type: 'information' | 'history'
+}
+
+export interface History extends HistorySection {
+  content: {
+    date: string
+    event: Event []
+  }
+  title: string
 }
 
 export interface Information extends HistorySection {
   information: string
   keywords: Keyword[]
 }
-
 export interface Keyword {
   keyword: string
   description: string
 }
 
-export interface History extends HistorySection {
-  content: {
-    date: string
-    events: Event[]
-  }[]
+export interface Content {
+  id: number
+  event: EventItem[]
+  date: string
+  history: number
 }
 
-export interface Event {
+export interface EventItem {
+  id: number
   content: string
-  image?: string
+  img: string
+  history_content: number
 }
+
+// export interface History extends HistorySection {
+//   content: {
+//     date: string
+//     events: Event[]
+//   }[]
+// }
+//
+// export interface Event {
+//   content: string
+//   image?: string
+// }
 
 // 조직도
+// export interface Profile {
+//   id : number
+//   image: string
+//   name: string
+//   position: string
+//   description: string[]
+// }
+//
+// export interface Organization {
+//   president: Profile[]
+//   vicePresidents: Profile[]
+//   directors: Profile[]
+// }
+
+// 데이터셋 수정본
 export interface Profile {
   image: string
   name: string

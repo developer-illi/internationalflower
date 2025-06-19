@@ -4,6 +4,7 @@ import { getActivity, getActivityDetail } from '@/api/business'
 import { redirect } from 'next/navigation'
 import { Metadata } from 'next'
 import { removeHtmlTags } from '@/utils/html'
+// import { ac } from 'framer-motion/dist/types.d-B50aGbjN'
 interface ActivitiesDetailProps {
   params: Promise<{
     id: string
@@ -48,7 +49,7 @@ export async function generateMetadata({
 export async function generateStaticParams() {
   try {
     const activities = await getActivity()
-
+    console.log(activities)
     return activities.map((activity) => ({
       id: activity.id.toString(),
     }))
@@ -64,7 +65,6 @@ export default async function ActivitiesDetail({
 
   try {
     const data = await getActivityDetail(Number(id))
-
     return (
       <DetailLayout htmlContent={data.content} href="/business/activities">
         <section className="grid grid-cols-1 md:grid-cols-2 gap-12">

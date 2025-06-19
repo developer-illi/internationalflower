@@ -8,15 +8,15 @@ export async function POST(request: Request) {
   const { password } = body
 
   if (password === CORRECT_PASSWORD) {
-    const cookieStore = await cookies()
-    cookieStore.set('auth_token', 'authenticated', {
+    const response = NextResponse.json({ success: true })
+    response.cookies.set('auth_token', 'authenticated', {
       httpOnly: true,
       secure: process.env.NODE_ENV === 'production',
       sameSite: 'strict',
-      maxAge: 7 * 24 * 60 * 60, // 7 days
+      maxAge: 60 * 60 * 1, // 1 time
     })
 
-    return NextResponse.json({ success: true })
+    return response
   }
 
   return NextResponse.json(

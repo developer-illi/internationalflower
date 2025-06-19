@@ -5,6 +5,8 @@ import { convertTypeToLabel } from '@/utils/news'
 import { removeHtmlTags } from '@/utils/html'
 import { Metadata } from 'next'
 import { redirect } from 'next/navigation'
+import { type } from 'os'
+// import { aw } from 'framer-motion/dist/types.d-B50aGbjN'
 
 interface NewsDetailProps {
   params: Promise<{
@@ -41,7 +43,6 @@ export async function generateMetadata({
 export async function generateStaticParams() {
   try {
     const newsList = await getNewsList('all')
-
     return newsList.map((news) => ({
       id: news.id.toString(),
     }))
@@ -53,8 +54,8 @@ export async function generateStaticParams() {
 export default async function NewsDetail({ params }: NewsDetailProps) {
   try {
     const { id } = await params
-    const news = await getNewsDetailData(Number(id))
-
+    const news_data = await getNewsDetailData(Number(id))
+    const news = Object.values(news_data)[0]
     return (
       <DetailLayout htmlContent={news.content} href="/news">
         <section className="space-y-4">
@@ -67,6 +68,8 @@ export default async function NewsDetail({ params }: NewsDetailProps) {
       </DetailLayout>
     )
   } catch (error) {
+    console.log('---공지사이트 에러발생----')
+    console.log(error)
     redirect('/news')
   }
 }

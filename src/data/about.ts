@@ -9,6 +9,7 @@ import {
   OrganizationResponse,
   Profile,
 } from '@/api/types/about'
+import { getHistory } from '@/api/about'
 
 export const BASE_INFORMATION_DATA: BaseInformationResponse = {
   name: '사단법인 국제꽃예술인협회',
@@ -74,195 +75,259 @@ const HISTORY_INFORMATION: Information = {
     },
   ],
 }
-
-const HISTORY_LIST: History[] = [
-  {
-    id: 2,
-    type: 'history',
-    title: '~2024',
-    content: [
-      {
-        date: '2024.00',
-        events: [
-          {
-            content: '국제꽃예술인협회 행사',
-          },
-          {
-            content: 'LOREM IPSUM DOLOR SIT AMET',
-          },
-        ],
-      },
-      {
-        date: '2024.00',
-        events: [
-          {
-            content: 'LOREM IPSUM',
-          },
-        ],
-      },
-      {
-        date: '2024.00',
-        events: [
-          {
-            content: 'LOREM IPSUM DOLOR',
-            image: '/images/dummy/5.png',
-          },
-        ],
-      },
-      {
-        date: '2024.00',
-        events: [
-          {
-            content: '국제꽃예술인협회 행사',
-          },
-          {
-            content: 'LOREM IPSUM DOLOR SIT AMET',
-          },
-        ],
-      },
-      {
-        date: '2024.00',
-        events: [
-          {
-            content: 'LOREM IPSUM',
-          },
-        ],
-      },
-      {
-        date: '2024.00',
-        events: [
-          {
-            content: 'LOREM IPSUM DOLOR',
-          },
-        ],
-      },
-    ],
-  },
-  {
-    id: 3,
-    type: 'history',
-    title: '2020~2023',
-    content: [
-      {
-        date: '2023.00',
-        events: [
-          {
-            content: '국제꽃예술인협회 행사',
-          },
-          {
-            content: 'LOREM IPSUM DOLOR SIT AMET',
-          },
-        ],
-      },
-      {
-        date: '2023.00',
-        events: [
-          {
-            content: 'LOREM IPSUM',
-          },
-        ],
-      },
-      {
-        date: '2023.00',
-        events: [
-          {
-            content: 'LOREM IPSUM DOLOR',
-            image: '/images/dummy/5.png',
-          },
-        ],
-      },
-      {
-        date: '2023.00',
-        events: [
-          {
-            content: '국제꽃예술인협회 행사',
-          },
-          {
-            content: 'LOREM IPSUM DOLOR SIT AMET',
-          },
-        ],
-      },
-      {
-        date: '2023.00',
-        events: [
-          {
-            content: 'LOREM IPSUM',
-          },
-        ],
-      },
-      {
-        date: '2023.00',
-        events: [
-          {
-            content: 'LOREM IPSUM DOLOR',
-          },
-        ],
-      },
-    ],
-  },
-  {
-    id: 4,
-    type: 'history',
-    title: '2010~2019',
-    content: [
-      {
-        date: '2019.00',
-        events: [
-          {
-            content: '국제꽃예술인협회 행사',
-          },
-          {
-            content: 'LOREM IPSUM DOLOR SIT AMET',
-          },
-        ],
-      },
-      {
-        date: '2019.00',
-        events: [
-          {
-            content: 'LOREM IPSUM',
-          },
-        ],
-      },
-      {
-        date: '2019.00',
-        events: [
-          {
-            content: 'LOREM IPSUM DOLOR',
-            image: '/images/dummy/5.png',
-          },
-        ],
-      },
-      {
-        date: '2019.00',
-        events: [
-          {
-            content: '국제꽃예술인협회 행사',
-          },
-          {
-            content: 'LOREM IPSUM DOLOR SIT AMET',
-          },
-        ],
-      },
-      {
-        date: '2019.00',
-        events: [
-          {
-            content: 'LOREM IPSUM',
-          },
-        ],
-      },
-      {
-        date: '2019.00',
-        events: [
-          {
-            content: 'LOREM IPSUM DOLOR',
-          },
-        ],
-      },
-    ],
-  },
+const HISTORY_LIST : History[]= [
 ]
+
+// const HISTORY_LIST: History[] = [
+//   {
+//     id: 2,
+//     type: 'history',
+//     title: '~2024',
+//     content: [
+//       {
+//         date: '2024.00',
+//         events: [
+//           {
+//             content: '국제꽃예술인협회 행사',
+//           },
+//           {
+//             content: 'LOREM IPSUM DOLOR SIT AMET',
+//           },
+//         ],
+//       },
+//       {
+//         date: '2024.00',
+//         events: [
+//           {
+//             content: 'LOREM IPSUM',
+//           },
+//         ],
+//       },
+//       {
+//         date: '2024.00',
+//         events: [
+//           {
+//             content: 'LOREM IPSUM DOLOR',
+//             image: '/images/dummy/5.png',
+//           },
+//         ],
+//       },
+//       {
+//         date: '2024.00',
+//         events: [
+//           {
+//             content: '국제꽃예술인협회 행사',
+//           },
+//           {
+//             content: 'LOREM IPSUM DOLOR SIT AMET',
+//           },
+//         ],
+//       },
+//       {
+//         date: '2024.00',
+//         events: [
+//           {
+//             content: 'LOREM IPSUM',
+//           },
+//         ],
+//       },
+//       {
+//         date: '2024.00',
+//         events: [
+//           {
+//             content: 'LOREM IPSUM DOLOR',
+//           },
+//         ],
+//       },
+//     ],
+//   },
+//   {
+//     id: 3,
+//     type: 'history',
+//     title: '2020~2023',
+//     content: [
+//       {
+//         date: '2023.00',
+//         events: [
+//           {
+//             content: '국제꽃예술인협회 행사',
+//           },
+//           {
+//             content: 'LOREM IPSUM DOLOR SIT AMET',
+//           },
+//         ],
+//       },
+//       {
+//         date: '2023.00',
+//         events: [
+//           {
+//             content: 'LOREM IPSUM',
+//           },
+//         ],
+//       },
+//       {
+//         date: '2023.00',
+//         events: [
+//           {
+//             content: 'LOREM IPSUM DOLOR',
+//             image: '/images/dummy/5.png',
+//           },
+//         ],
+//       },
+//       {
+//         date: '2023.00',
+//         events: [
+//           {
+//             content: '국제꽃예술인협회 행사',
+//           },
+//           {
+//             content: 'LOREM IPSUM DOLOR SIT AMET',
+//           },
+//         ],
+//       },
+//       {
+//         date: '2023.00',
+//         events: [
+//           {
+//             content: 'LOREM IPSUM',
+//           },
+//         ],
+//       },
+//       {
+//         date: '2023.00',
+//         events: [
+//           {
+//             content: 'LOREM IPSUM DOLOR',
+//           },
+//         ],
+//       },
+//     ],
+//   },
+//   {
+//     id: 4,
+//     type: 'history',
+//     title: '2010~2019',
+//     content: [
+//       {
+//         date: '2019.00',
+//         events: [
+//           {
+//             content: '국제꽃예술인협회 행사',
+//           },
+//           {
+//             content: 'LOREM IPSUM DOLOR SIT AMET',
+//           },
+//         ],
+//       },
+//       {
+//         date: '2019.00',
+//         events: [
+//           {
+//             content: 'LOREM IPSUM',
+//           },
+//         ],
+//       },
+//       {
+//         date: '2019.00',
+//         events: [
+//           {
+//             content: 'LOREM IPSUM DOLOR',
+//             image: '/images/dummy/5.png',
+//           },
+//         ],
+//       },
+//       {
+//         date: '2019.00',
+//         events: [
+//           {
+//             content: '국제꽃예술인협회 행사',
+//           },
+//           {
+//             content: 'LOREM IPSUM DOLOR SIT AMET',
+//           },
+//         ],
+//       },
+//       {
+//         date: '2019.00',
+//         events: [
+//           {
+//             content: 'LOREM IPSUM',
+//           },
+//         ],
+//       },
+//       {
+//         date: '2019.00',
+//         events: [
+//           {
+//             content: 'LOREM IPSUM DOLOR',
+//           },
+//         ],
+//       },
+//     ],
+//   },
+//   {
+//     id: 5,
+//     type: 'history',
+//     title: '~2022',
+//     content: [
+//       {
+//         date: '2024.00',
+//         events: [
+//           {
+//             content: '국제꽃예술인협회 행사',
+//           },
+//           {
+//             content: 'LOREM IPSUM DOLOR SIT AMET',
+//           },
+//         ],
+//       },
+//       {
+//         date: '2024.00',
+//         events: [
+//           {
+//             content: 'LOREM IPSUM',
+//           },
+//         ],
+//       },
+//       {
+//         date: '2024.00',
+//         events: [
+//           {
+//             content: 'LOREM IPSUM DOLOR',
+//             image: '/images/dummy/5.png',
+//           },
+//         ],
+//       },
+//       {
+//         date: '2024.00',
+//         events: [
+//           {
+//             content: '국제꽃예술인협회 행사',
+//           },
+//           {
+//             content: 'LOREM IPSUM DOLOR SIT AMET',
+//           },
+//         ],
+//       },
+//       {
+//         date: '2024.00',
+//         events: [
+//           {
+//             content: 'LOREM IPSUM',
+//           },
+//         ],
+//       },
+//       {
+//         date: '2024.00',
+//         events: [
+//           {
+//             content: 'LOREM IPSUM DOLOR',
+//           },
+//         ],
+//       },
+//     ],
+//   },
+// ]
 
 export const HISTORY_DATA: HistoryResponse[] = [
   HISTORY_INFORMATION,

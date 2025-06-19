@@ -15,7 +15,7 @@ import { mapResponse } from '@/utils/mapper'
 
 export async function getExhibition(type: string): Promise<Exhibition[]> {
   const response = await baseFetcher<ExhibitionResponse[]>(
-    `/api/exhibition?type=${type}`,
+    `/exhibition?type=${type}`,
   )
   return response.map((exhibition) =>
     mapResponse<Exhibition, ExhibitionResponse>(exhibition),
@@ -24,7 +24,7 @@ export async function getExhibition(type: string): Promise<Exhibition[]> {
 
 export async function getCertification(): Promise<Certification[]> {
   const response = await baseFetcher<CertificationResponse[]>(
-    '/api/certification',
+     '/license',
   )
   return response.map((certification) =>
     mapResponse<Certification, CertificationResponse>(certification),
@@ -32,7 +32,7 @@ export async function getCertification(): Promise<Certification[]> {
 }
 
 export async function getActivity(): Promise<Activity[]> {
-  const response = await baseFetcher<ActivityResponse[]>('/api/activity')
+  const response = await baseFetcher<ActivityResponse[]>('/activity')
   return response.map((activity) =>
     mapResponse<Activity, ActivityResponse>(activity),
   )
@@ -40,7 +40,8 @@ export async function getActivity(): Promise<Activity[]> {
 
 export async function getActivityDetail(id: number): Promise<ActivityDetail> {
   const response = await baseFetcher<ActivityDetailResponse>(
-    `/api/activity/${id}`,
+    `/activity/${id}`,
+    // `http://localhost:3000/api/activity/${id}`,
   )
   return mapResponse<ActivityDetail, ActivityDetailResponse>(response)
 }

@@ -5,21 +5,23 @@ import Title from '@/components/common/Title'
 import { useScrollObserver } from '@/hooks/useScrollObserver'
 import MobileHistory from '@/components/history/MobileHistory'
 import DesktopHistory from '@/components/history/DesktopHistory'
+import AdminHistory from '@/components/history/AdminHistory'
 import { HistorySection as HistorySectionType } from '@/types/about'
 import { motion } from 'framer-motion'
 
 interface HistoryPageProps {
   sections: HistorySectionType[]
+  isLoggedIn: boolean
 }
 
-const HistoryContent = ({ sections }: HistoryPageProps) => {
+const HistoryContent = ({ sections, isLoggedIn }: HistoryPageProps) => {
   const contentRef = useRef<HTMLDivElement>(null)
   const { activeSection, shouldTranslateTOC, sectionRefs, scrollToSection } =
     useScrollObserver(contentRef, {
       threshold: 0.1,
       rootMargin: '-45% 0px -45% 0px',
     })
-
+  console.log(isLoggedIn)
   if (!sections) return null
   return (
     <motion.div
@@ -29,16 +31,26 @@ const HistoryContent = ({ sections }: HistoryPageProps) => {
       className="my-40"
     >
       <Title title="연혁" className="container-layout" />
-
       {/* Desktop */}
-      <DesktopHistory
-        sections={sections}
-        activeSection={activeSection}
-        contentRef={contentRef}
-        sectionRefs={sectionRefs}
-        scrollToSection={scrollToSection}
-      />
-
+      {isLoggedIn ? (
+        <AdminHistory
+          sections={sections}
+          activeSection={activeSection}
+          contentRef={contentRef}
+          sectionRefs={sectionRefs}
+          scrollToSection={scrollToSection}
+          isLoggedIn={isLoggedIn}
+        />
+      ) : (
+        <DesktopHistory
+          sections={sections}
+          activeSection={activeSection}
+          contentRef={contentRef}
+          sectionRefs={sectionRefs}
+          scrollToSection={scrollToSection}
+          isLoggedIn={isLoggedIn}
+        />
+      )}
       {/* Mobile */}
       <MobileHistory
         sections={sections}
@@ -49,6 +61,7 @@ const HistoryContent = ({ sections }: HistoryPageProps) => {
         scrollToSection={scrollToSection}
       />
     </motion.div>
+
   )
 }
 

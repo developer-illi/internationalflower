@@ -5,7 +5,9 @@ import FadeInSection from '@/components/motion/FadeInSection'
 import { Activity } from '@/types/business'
 import { getActivity } from '@/api/business'
 import ActivitiesPagination from '@/components/pagination/ActivitiesPagination'
+import ActivitiesModal from '@/components/admin/business/activities/ActivitiesAddBtn'
 import { Metadata } from 'next'
+import { cookies } from 'next/headers'
 
 interface ExternalActivitiesProps {
   searchParams: Promise<{
@@ -35,13 +37,14 @@ export default async function ExternalActivities({
 }: ExternalActivitiesProps) {
   const activityData = await getActivity().catch(() => [])
   const tabList = activityData.map((activity) => activity.title)
-
+  const cookieStore = await cookies()
+  const authToken = cookieStore.get('auth_token')
+  const isLoggedIn = authToken?.value === 'authenticated'
   const { tab } = await searchParams
   const activeTab = tab ?? tabList[0]
   const activeTabData =
     activityData.find((activity) => activity.title === activeTab) ??
     activityData[0]
-
   if (!activeTabData) {
     return null
   }
@@ -53,12 +56,13 @@ export default async function ExternalActivities({
         <FadeInSection>
           <Breadcrumb path={['주요사업', '대외활동']} />
         </FadeInSection>
-
+        {isLoggedIn && (
+          <ActivitiesModal/>
+        )}
         <FadeInSection delay={1}>
           <TabBar activeTab={activeTab} tabList={tabList} />
         </FadeInSection>
-
-        <ActivitiesPagination data={activeTabData} />
+        <ActivitiesPagination data={activeTabData} isLoggedIn={isLoggedIn} />
       </section>
     </div>
   )

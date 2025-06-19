@@ -27,7 +27,7 @@ const MainNewsCard = ({ news }: MainNewsCardProps) => {
       <p className="text-foreground font-light">{news.date}</p>
       <div className="relative aspect-[3/2] overflow-hidden">
         <Image
-          src={`/images/hero.png`}
+          src={news.image}
           alt={`${news.title}`}
           fill
           sizes="(max-width: 1024) 99vw, (max-width: 1120px) 50vw"

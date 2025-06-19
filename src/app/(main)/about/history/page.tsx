@@ -1,6 +1,8 @@
 import HistoryContent from '@/components/history/HistoryContent'
+
 import { getHistory } from '@/api/about'
 import { Metadata } from 'next'
+import { cookies } from 'next/headers'
 
 export async function generateMetadata(): Promise<Metadata> {
   return {
@@ -10,6 +12,7 @@ export async function generateMetadata(): Promise<Metadata> {
 
 export default async function History() {
   const sections = await getHistory().catch(() => [])
-
-  return <HistoryContent sections={sections} />
+  const authToken = (await cookies()).get('auth_token')
+  const isLoggedIn = authToken?.value === 'authenticated'
+  return <HistoryContent sections={sections} isLoggedIn={isLoggedIn} />
 }

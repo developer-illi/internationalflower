@@ -5,9 +5,10 @@ import ArrowRight from '@/assets/arrow-right.svg'
 
 interface PaginationProps {
   children: React.ReactNode[]
+  fixedTop?: React.ReactNode
 }
 
-const Pagination: React.FC<PaginationProps> = ({ children }) => {
+const Pagination: React.FC<PaginationProps> = ({ children, fixedTop }) => {
   const {
     currentPage,
     totalPages,
@@ -22,17 +23,21 @@ const Pagination: React.FC<PaginationProps> = ({ children }) => {
 
   return (
     <section className="flex flex-col justify-center gap-y-10">
-      {/* Pagination Items */}
-      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 grid-rows-3 gap-4">
+      {/* Grid with fixedTop inside */}
+      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
+        {fixedTop && (
+          <div className="min-h-[100px]">{fixedTop}</div>
+        )}
         {paginatedItems[currentPage - 1]?.map((child, index) => (
-          <div key={index}>{child}</div>
+          <div key={index} className="min-h-[100px]">
+            {child}
+          </div>
         ))}
       </div>
 
-      {/* Pagination */}
+      {/* Pagination Buttons */}
       {children.length >= 9 && (
         <div className="flex items-center justify-center space-x-2 select-none">
-          {/* Prev Button */}
           <button
             onClick={goToPrevPageGroup}
             disabled={currentPage <= 1}
@@ -41,7 +46,6 @@ const Pagination: React.FC<PaginationProps> = ({ children }) => {
             <ArrowRight className="rotate-180 stroke-foreground group-disabled:group-hover:stroke-foreground group-hover:stroke-primary" />
           </button>
 
-          {/* Page Numbers */}
           {pageNumbers.map((pageNumber) => (
             <button
               key={pageNumber}
@@ -56,7 +60,6 @@ const Pagination: React.FC<PaginationProps> = ({ children }) => {
             </button>
           ))}
 
-          {/* Next Button */}
           <button
             onClick={goToNextPageGroup}
             disabled={currentPage >= totalPages}

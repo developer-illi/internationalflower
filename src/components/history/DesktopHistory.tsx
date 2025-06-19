@@ -4,10 +4,13 @@ import {
   History,
   Information,
   HistorySection as HistorySectionType,
+
 } from '@/types/about'
 import { motion } from 'framer-motion'
 import InformationSection from '@/components/history/InformationSection'
 import HistorySection from '@/components/history/HistorySection'
+import HistoryContent from '@/components/admin/History_content'
+import History_add from '@/components/admin/History_add_btn'
 import ScrollIndicator from './ScrollIndicator'
 
 interface DesktopHistoryProps {
@@ -16,6 +19,7 @@ interface DesktopHistoryProps {
   contentRef: React.RefObject<HTMLDivElement | null>
   sectionRefs: React.RefObject<{ [key: string]: HTMLDivElement | null }>
   scrollToSection: (sectionId: string) => void
+  isLoggedIn : boolean
 }
 
 const DesktopHistory = ({
@@ -24,6 +28,7 @@ const DesktopHistory = ({
   contentRef,
   sectionRefs,
   scrollToSection,
+  isLoggedIn,
 }: DesktopHistoryProps) => {
   return (
     <div className="hidden container-layout md:flex flex-row md:pt-20 gap-x-8">
@@ -49,7 +54,6 @@ const DesktopHistory = ({
           ))}
         </div>
       </nav>
-
       <ScrollIndicator />
 
       {/* Contents */}
@@ -57,6 +61,7 @@ const DesktopHistory = ({
         ref={contentRef}
         className="flex-1 md:border-l md:pl-16 border-border transition-all duration-300 ease-in-out"
       >
+
         {sections.map((section) => (
           <div
             key={section.title + 'desktop'}

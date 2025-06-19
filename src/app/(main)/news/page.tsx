@@ -10,6 +10,9 @@ import { isNewsType } from '@/utils/news'
 import Link from 'next/link'
 import { getNewsList } from '@/api/news'
 import { Metadata } from 'next'
+import { cookies } from 'next/headers'
+import WritePostButton from '@/components/admin/WritePostButton'
+
 
 interface NewsProps {
   searchParams: Promise<{
@@ -26,6 +29,9 @@ export async function generateMetadata(): Promise<Metadata> {
 export default async function News({ searchParams }: NewsProps) {
   const { type } = await searchParams
   const currentType = isNewsType(type) ? type : 'all'
+  const cookieStore = await cookies()
+  const authToken = cookieStore.get('auth_token')
+  const isLoggedIn = authToken?.value === 'authenticated'
   const newsList = await getNewsList(currentType).catch((_error) => {
     return []
   })
@@ -49,9 +55,9 @@ export default async function News({ searchParams }: NewsProps) {
                 <Link href={`/news?type=${type}`}>{label}</Link>
               </li>
             ))}
+
           </ul>
         </FadeInSection>
-
         <FadeInSection delay={2}>
           {newsList.length > 0 ? (
             <Pagination>
@@ -64,6 +70,9 @@ export default async function News({ searchParams }: NewsProps) {
           )}
         </FadeInSection>
       </div>
+      {isLoggedIn && (
+        <WritePostButton />
+      )}
     </Suspense>
   )
 }

@@ -1,1 +1,1 @@
-self.__NEXT_FONT_MANIFEST="{\"pages\":{},\"app\":{\"/Users/kim/deploy/interflower/internationalflower/src/app/layout\":[\"static/media/3d9ea938b6afa941-s.p.woff2\"]},\"appUsingSizeAdjust\":true,\"pagesUsingSizeAdjust\":false}"
+self.__NEXT_FONT_MANIFEST='{"pages":{},"app":{"/Users/kim/deploy/interflower/internationalflower/src/app/layout":["static/media/5d258b355fefebcb-s.p.woff2"],"/Users/kim/deploy/interflower/internationalflower/src/app/(preview)/layout":["static/media/5d258b355fefebcb-s.p.woff2"]},"appUsingSizeAdjust":true,"pagesUsingSizeAdjust":false}';

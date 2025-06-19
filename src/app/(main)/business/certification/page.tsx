@@ -6,6 +6,8 @@ import { Certification as CertificationType } from '@/types/business'
 import { getCertification } from '@/api/business'
 import CertificationContent from '@/components/certification/CertificationContent'
 import { Metadata } from 'next'
+import {cookies} from 'next/headers'
+import LicenseAddModal from '@/components/admin/business/certification/LisenceAddBtn'
 
 interface CertificationPageProps {
   searchParams: Promise<{
@@ -28,21 +30,23 @@ export async function generateStaticParams() {
   } catch (error) {
     return []
   }
+
 }
 
 export default async function Certification({
   searchParams,
 }: CertificationPageProps) {
+  const cookieStore = await cookies()
+  const authToken = cookieStore.get('auth_token')
+  const isLoggedIn = authToken?.value === 'authenticated'
   const certificationData = await getCertification().catch(() => [])
   const tabList = certificationData.map((certification) => certification.title)
-
   const { tab } = await searchParams
   const activeTab = tab ?? tabList[0]
   const activeTabData =
     certificationData.find(
       (certification) => certification.title === activeTab,
     ) ?? certificationData[0]
-
   if (!activeTabData) {
     return null
   }
@@ -54,7 +58,9 @@ export default async function Certification({
         <FadeInSection>
           <Breadcrumb path={['주요사업', '자격증']} />
         </FadeInSection>
-
+        {isLoggedIn && (
+          <LicenseAddModal/>
+        )}
         <FadeInSection delay={1}>
           <TabBar activeTab={activeTab} tabList={tabList} />
         </FadeInSection>

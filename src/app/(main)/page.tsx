@@ -8,6 +8,7 @@ import HeroSection from '@/components/main/HeroSection'
 import NewsList from '@/components/main/NewsList'
 
 export default function Home() {
+
   return (
     <main className="select-none overflow-hidden">
       {/* 히어로 섹션 */}

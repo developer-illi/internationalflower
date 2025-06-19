@@ -1,6 +1,7 @@
 /**
  * 협회 기본 정보 API 응답 데이터 타입
  */
+import { list } from 'postcss'
 
 // Footer에 표시되는 정보
 export interface BaseInformationResponse {
@@ -26,12 +27,42 @@ export interface ContactInformationResponse {
 export interface GreetingResponse {
   title: string
   content: string
-  writer: {
-    association: string
-    position: string
-    name: string
-  }
+  writer: Writer
 }
+
+export interface Writer{
+  association : string
+  position : string
+  name : string
+}
+// export interface GreetingResponse {
+//   id: number;
+//   title: string;
+//   content: string;
+//   writer: WriterResponse[];
+// }
+//
+// export interface WriterResponse {
+//   id: number;
+//   association: string;
+//   position: string;
+//   name: string;
+//   greeting: number;
+// }
+//
+// // 애플리케이션 내부에서 사용하는 데이터 모델
+// export interface Greeting {
+//   title: string;
+//   content: string;
+//   writer: Writer[];
+// }
+//
+// export interface Writer {
+//   association: string;
+//   position: string;
+//   name: string;
+//   // 필요하다면 추가 필드를 정의할 수 있습니다.
+// }
 
 // 연혁
 export interface HistoryResponse {

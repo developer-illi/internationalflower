@@ -12,19 +12,19 @@ const HistorySection = ({ history }: HistorySectionProps) => {
       <Title title={history.title} />
       <table className="w-full break-keep">
         <tbody>
-          {history.content.map((item, index) => (
+          {history.contents.map((item, index) => (
             <tr key={`${item.date}-${index}`}>
               <td className="text-nowrap font-bold align-top pr-6 w-fit">
                 {item.date}
               </td>
               <td className="align-top pb-6 w-full">
                 <ul className="flex flex-col gap-y-5">
-                  {item.events.map((event) => (
-                    <li key={event.content} className="flex flex-col gap-y-5">
+                  {item.event.map((event) => (
+                    <li key={event.id} className="flex flex-col gap-y-5">
                       <p>{event.content}</p>
-                      {event.image && (
+                      {event.img && (
                         <Image
-                          src={event.image}
+                          src={event.img}
                           alt={event.content}
                           width={500}
                           height={500}

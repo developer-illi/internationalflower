@@ -5,12 +5,12 @@ import { mapResponse } from '@/utils/mapper'
 
 export async function getNoticeList(searchKeyword?: string): Promise<Notice[]> {
   const response = await baseFetcher<NoticeResponse[]>(
-    `/api/notice${searchKeyword ? `?search=${searchKeyword}` : ''}`,
+    `/notice${searchKeyword ? `?search=${searchKeyword}` : ''}`,
   )
   return response.map((notice) => mapResponse<Notice, NoticeResponse>(notice))
 }
 
 export async function getNoticeDetailData(id: number): Promise<NoticeDetail> {
-  const response = await baseFetcher<NoticeDetailResponse>(`/api/notice/${id}`)
+  const response = await baseFetcher<NoticeDetailResponse>(`/notice/${id}`)
   return mapResponse<NoticeDetail, NoticeDetailResponse>(response)
 }
