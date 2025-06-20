@@ -40,12 +40,13 @@ export async function getGreeting(): Promise<Greeting> {
 //수정 해야하는 부분
 export async function getHistory(): Promise<HistorySection[]> {
   try {
-    const response = await baseFetcher<HistoryResponse[]>('/history/')
+    const response = await baseFetcher<HistoryResponse[]>('/history')
+    // console.log('✅ 응답:', response)
     return response.map((history) =>
       mapResponse<HistorySection, HistoryResponse>(history),
     )
   } catch (err) {
-    console.error('❌ getHistory 에러:', err)
+    // console.error('❌ getHistory 에러:', err.response?.status, err.response?.data)
     return []
   }
 }
