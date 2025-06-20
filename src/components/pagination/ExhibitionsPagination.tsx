@@ -16,7 +16,7 @@ import { motion } from 'framer-motion'
 interface ExhibitionsPaginationProps {
   data: Exhibition
   isLoggedIn: boolean
-  type : string
+  type: string
 }
 
 const ExhibitionsPagination = ({ data, isLoggedIn, type }: ExhibitionsPaginationProps) => {
@@ -50,16 +50,19 @@ const ExhibitionsPagination = ({ data, isLoggedIn, type }: ExhibitionsPagination
         />
         {/* Mobile Carousel */}
         <DraggableCarousel className="block md:hidden">
-          {data.mainImageList.map((url) => (
-            <Image
-              key={url.startsWith('/') ? url : `/${url}`}
-              src={url.startsWith('/') ? url : `/${url}`}  // 앞에 "/" 없으면 붙이기
-              alt=""
-              width={500}
-              height={500}
-              className="object-cover w-full h-auto aspect-video"
-            />
-          ))}
+          {data.mainImageList.map((url) => {
+            const validSrc = url.startsWith('http') ? url : `/media/${url.replace(/^\/+/, '')}`
+            return (
+              <Image
+                key={validSrc}
+                src={validSrc}
+                alt=""
+                width={500}
+                height={500}
+                className="object-cover w-full h-auto aspect-video"
+              />
+            )
+          })}
         </DraggableCarousel>
         <Pagination fixedTop={isLoggedIn ? <DomesticImgAdd id={data.id} type={type} /> : undefined}>
           {data.galleryList.map((item) => (
