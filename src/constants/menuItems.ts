@@ -8,7 +8,6 @@ export const menuItems: MenuItem[] = [
       { title: '인사말', href: '/about/greeting' },
       { title: '연혁', href: '/about/history' },
       { title: '조직도', href: '/about/organization' },
-      { title: 'CI/BI', href: '/about/ci' },
     ],
   },
   {
