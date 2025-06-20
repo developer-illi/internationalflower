@@ -13,7 +13,6 @@ import { Metadata } from 'next'
 import { cookies } from 'next/headers'
 import WritePostButton from '@/components/admin/WritePostButton'
 
-
 interface NewsProps {
   searchParams: Promise<{
     type?: string
@@ -38,41 +37,42 @@ export default async function News({ searchParams }: NewsProps) {
 
   return (
     <Suspense fallback={<Loading />}>
-      <div className="container-layout my-40">
-        <FadeInSection>
-          <Title title="협회소식" />
-        </FadeInSection>
+      <div className="flex flex-col min-h-screen">
+        <div className="container-layout my-40 flex-grow">
+          <FadeInSection>
+            <Title title="협회소식" />
+          </FadeInSection>
 
-        <FadeInSection delay={1}>
-          <ul className="flex gap-x-4 py-8">
-            {Object.entries(NEWS_TYPE).map(([type, label]) => (
-              <li
-                key={type}
-                className={`text-base font-semibold cursor-pointer ${
-                  type === currentType ? 'text-primary' : 'text-foreground'
-                }`}
-              >
-                <Link href={`/news?type=${type}`}>{label}</Link>
-              </li>
-            ))}
-
-          </ul>
-        </FadeInSection>
-        <FadeInSection delay={2}>
-          {newsList.length > 0 ? (
-            <Pagination>
-              {newsList.map((news, _index) => (
-                <NewsCard key={news.id} news={news} />
+          <FadeInSection delay={1}>
+            <ul className="flex gap-x-4 py-8">
+              {Object.entries(NEWS_TYPE).map(([type, label]) => (
+                <li
+                  key={type}
+                  className={`text-base font-semibold cursor-pointer ${
+                    type === currentType ? 'text-primary' : 'text-foreground'
+                  }`}
+                >
+                  <Link href={`/news?type=${type}`}>{label}</Link>
+                </li>
               ))}
-            </Pagination>
-          ) : (
-            <Empty message="등록된 협회소식이 없습니다." />
-          )}
-        </FadeInSection>
+            </ul>
+          </FadeInSection>
+
+          <FadeInSection delay={2}>
+            {newsList.length > 0 ? (
+              <Pagination>
+                {newsList.map((news, _index) => (
+                  <NewsCard key={news.id} news={news} />
+                ))}
+              </Pagination>
+            ) : (
+              <Empty message="등록된 협회소식이 없습니다." />
+            )}
+          </FadeInSection>
+        </div>
+
+        {isLoggedIn && <WritePostButton />}
       </div>
-      {isLoggedIn && (
-        <WritePostButton />
-      )}
     </Suspense>
   )
 }

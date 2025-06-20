@@ -21,20 +21,20 @@ import { circIn } from 'framer-motion'
 
 export async function getBaseInformation(): Promise<BaseInformation> {
   const response = await baseFetcher<BaseInformationResponse>(
-    '/api/base-information',
+    'https://i-fa.or.kr//api/base-information',
   )
   return mapResponse<BaseInformation, BaseInformationResponse>(response)
 }
 
 export async function getContactInformation(): Promise<ContactInformation> {
   const response = await baseFetcher<ContactInformationResponse>(
-    'http://localhost:3000/api/contact-information',
+    'https://i-fa.or.kr/api/contact-information',
   )
   return mapResponse<ContactInformation, ContactInformationResponse>(response)
 }
 
 export async function getGreeting(): Promise<Greeting> {
-  const response = await baseFetcher<GreetingResponse>('http://localhost:3000/api/greeting')
+  const response = await baseFetcher<GreetingResponse>('https://i-fa.or.kr/api/greeting')
   return mapGreetingResponseToGreeting(response)
 }
 //수정 해야하는 부분
