@@ -56,7 +56,7 @@ export default function History_modal() {
               </button>
               <button
                 type="submit"
-                className="px-4 py-2 bg-blue-500 hover:bg-blue-600 text-white rounded"
+                className="px-4 py-2 bg-[#E34798] hover:bg-blue-600 text-white rounded"
               >
                 저장
               </button>

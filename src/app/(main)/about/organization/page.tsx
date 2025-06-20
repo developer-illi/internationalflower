@@ -3,6 +3,8 @@ import Profile from '@/components/common/Profile'
 import { getOrganization } from '@/api/about'
 import FadeInSection from '@/components/motion/FadeInSection'
 import { Metadata } from 'next'
+import {cookies} from 'next/headers'
+import Organization_modal from '@/components/admin/organization/OrganizationAdd'
 
 export async function generateMetadata(): Promise<Metadata> {
   return {
@@ -12,17 +14,21 @@ export async function generateMetadata(): Promise<Metadata> {
 
 export default async function Organization() {
   const organizationData = await getOrganization().catch(() => null)
-
   if (!organizationData) {
     return null
   }
+  const cookieStore = await cookies()
+  const authToken = cookieStore.get('auth_token')
+  const isLoggedIn = authToken?.value === 'authenticated'
 
   return (
     <main className="container-layout my-40 space-y-12 cursor-default">
       <FadeInSection>
         <Title title="조직도" subTitle="임원진소개" />
       </FadeInSection>
-
+      {isLoggedIn && (
+        <Organization_modal/>
+      )}
       <FadeInSection delay={1}>
         <h2 className="text-xl sm:text-2xl font-semibold border-b border-black w-fit px-2 sm:px-4 py-2 mx-auto text-center">
           (사)국제꽃예술인 협회 임원조직도

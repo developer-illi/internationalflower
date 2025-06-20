@@ -52,7 +52,7 @@ export async function getHistory(): Promise<HistorySection[]> {
 }
 
 export async function getOrganization(): Promise<Organization> {
-  const response = await baseFetcher<OrganizationResponse>('/organization/')
+  const response = await baseFetcher<OrganizationResponse>('/organization')
   return mapResponse<Organization, OrganizationResponse>(response)
 }
 
