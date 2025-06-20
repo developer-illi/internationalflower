@@ -1,7 +1,7 @@
 'use client'
 
 import { useRef } from 'react'
-import { motion, useInView, useAnimation } from 'framer-motion'
+import { motion, useInView, useAnimation, easeInOut, easeOut } from 'framer-motion'
 import Link from 'next/link'
 import Image from 'next/image'
 import FadeInViewSection from '@/components/motion/FadeInViewSection'
@@ -12,7 +12,6 @@ interface AnimatedRevealProps {
   reverse?: boolean
 }
 
-// 애니메이션 variants 정의
 const revealVariants = {
   initial: { scaleX: 1, scaleY: 0 },
   animate: { scaleX: [1, 1, 0], scaleY: [0, 1, 1] },
@@ -51,11 +50,11 @@ const ProjectCard = ({ project, reverse = false }: AnimatedRevealProps) => {
       }),
       imageControls.start({
         minWidth: '100%',
-        transition: { duration: 0.4, delay: 0, ease: 'easeOut' },
+        transition: { duration: 0.4, delay: 0, ease: easeOut },
       }),
       overlayControls.start({
         opacity: 1,
-        transition: { duration: 0.2, delay: 0.4, ease: 'easeOut' },
+        transition: { duration: 0.2, delay: 0.4, ease: easeOut },
       }),
     ])
   }
@@ -68,16 +67,16 @@ const ProjectCard = ({ project, reverse = false }: AnimatedRevealProps) => {
         transition: {
           scaleX: { duration: 0.2, delay: 0.4 },
           opacity: { duration: 0.5, delay: 0.6 },
-          ease: 'easeInOut',
+          ease: easeInOut,
         },
       }),
       imageControls.start({
         minWidth: 0,
-        transition: { duration: 1, delay: 0.1, ease: 'easeOut' },
+        transition: { duration: 1, delay: 0.1, ease: easeOut },
       }),
       overlayControls.start({
         opacity: 0,
-        transition: { duration: 0.3, delay: 0, ease: 'easeInOut' },
+        transition: { duration: 0.3, delay: 0, ease: easeInOut },
       }),
     ])
   }
@@ -85,7 +84,7 @@ const ProjectCard = ({ project, reverse = false }: AnimatedRevealProps) => {
   const commonTransition = {
     duration: isInView ? 0.5 : 0,
     delay: 0,
-    ease: 'easeInOut',
+    ease: easeInOut,
   }
 
   return (
@@ -106,7 +105,7 @@ const ProjectCard = ({ project, reverse = false }: AnimatedRevealProps) => {
           transition={{
             duration: isInView ? 1.5 : 0,
             delay: 0,
-            ease: 'easeInOut',
+            ease: easeInOut,
           }}
           onAnimationComplete={() => {
             imageControls.start({ opacity: isInView ? 1 : 0 })

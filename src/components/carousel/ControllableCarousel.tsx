@@ -39,7 +39,6 @@ const ControllableCarousel = ({
   const [currentIndex, setCurrentIndex] = useState(0)
   const [touchStartX, setTouchStartX] = useState<number | null>(null)
   const [isTransitioning, setIsTransitioning] = useState(false)
-
   const isFirstImage = currentIndex === 0
   const isLastImage = currentIndex === imageUrls.length - 1
   const goToPrevious = useCallback(() => {
