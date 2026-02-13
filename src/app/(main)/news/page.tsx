@@ -12,6 +12,7 @@ import { getNewsList } from '@/api/news'
 import { Metadata } from 'next'
 import { cookies } from 'next/headers'
 import WritePostButton from '@/components/admin/WritePostButton'
+import DeleteNewsButton from '@/components/admin/DeleteNewsButton' // 삭제용 컴포넌트(가칭)
 
 interface NewsProps {
   searchParams: Promise<{
@@ -31,6 +32,7 @@ export default async function News({ searchParams }: NewsProps) {
   const cookieStore = await cookies()
   const authToken = cookieStore.get('auth_token')
   const isLoggedIn = authToken?.value === 'authenticated'
+
   const newsList = await getNewsList(currentType).catch((_error) => {
     return []
   })
@@ -61,8 +63,15 @@ export default async function News({ searchParams }: NewsProps) {
           <FadeInSection delay={2}>
             {newsList.length > 0 ? (
               <Pagination>
-                {newsList.map((news, _index) => (
-                  <NewsCard key={news.id} news={news} />
+                {newsList.map((news) => (
+                  <div key={news.id} className="relative group">
+                    <NewsCard news={news} />
+
+                    {/* ✅ 로그인 시 삭제 버튼 노출 */}
+                    {isLoggedIn && (
+                      <DeleteNewsButton newsId={news.id} />
+                    )}
+                  </div>
                 ))}
               </Pagination>
             ) : (

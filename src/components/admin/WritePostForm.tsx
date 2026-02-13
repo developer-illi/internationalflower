@@ -65,8 +65,14 @@ export default function WritePostForm() {
     e.target.value = ''
   }
 
+  // ✅ handleSubmit 수정: 등록 확인 알럿 추가
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault()
+
+    // 1. 사용자에게 확인 요청
+    const isConfirmed = window.confirm("정말로 게시글을 등록하시겠습니까?");
+    if (!isConfirmed) return; // '취소'를 누르면 여기서 함수가 종료됩니다.
+
     const formData = new FormData()
     formData.append('title', title)
     formData.append('sub_title', subTitle)
@@ -130,7 +136,7 @@ export default function WritePostForm() {
           />
         </div>
 
-        {/* ✅ 서브 타이틀 입력 (제목 아래에 추가) */}
+        {/* 서브 타이틀 입력 */}
         <div className="px-6 py-4 border-b">
           <label className="block text-sm text-gray-600 mb-2">서브 타이틀</label>
           <input
@@ -148,7 +154,7 @@ export default function WritePostForm() {
           <div className="relative inline-block">
             <label
               htmlFor="image-upload"
-              className="cursor-pointer inline-block px-4 py-2 bg-[#E34798] text-white rounded hover:bg-blue-600 text-sm"
+              className="cursor-pointer inline-block px-4 py-2 bg-[#E34798] text-white rounded hover:bg-opacity-90 text-sm"
             >
               이미지 선택
             </label>
@@ -187,7 +193,7 @@ export default function WritePostForm() {
           </button>
           <button
             type="submit"
-            className="px-4 py-2 bg-[#E34798] text-white rounded hover:bg-blue-700"
+            className="px-4 py-2 bg-[#E34798] text-white rounded hover:bg-opacity-90"
           >
             등록
           </button>
