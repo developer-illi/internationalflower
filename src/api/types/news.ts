@@ -17,4 +17,6 @@ export interface NewsDetailResponse {
   content: string
   date: string
   type: string
+  sub_title: string | null
+  image: string | null
 }

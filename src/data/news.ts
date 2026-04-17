@@ -42,4 +42,6 @@ export const NEWS_DETAIL_DATA: NewsDetailResponse = {
   content: SAMPLE_HTML,
   date: '2024.01.01',
   type: 'issues',
+  sub_title: null,
+  image: null,
 }
