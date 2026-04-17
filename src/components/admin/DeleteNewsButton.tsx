@@ -19,8 +19,8 @@ export default function DeleteNewsButton({ newsId }: DeleteNewsButtonProps) {
       // ⚠️ Django URL 설정이 path('news_delte/', ...) 이고
       // 뷰에서 id 인자를 받는다면 보통 아래 형식을 사용합니다.
       // 만약 404가 뜬다면 `${process.env.NEXT_PUBLIC_API_URL}/news_delte/?id=${newsId}` 로 시도해보세요.
-      const res = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/news_delte/${newsId}`, {
-        method: 'GET', // Django 뷰가 @api_view(['GET']) 이므로
+      const res = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/news_delete/${newsId}`, {
+        method: 'DELETE',
       })
 
       if (res.ok) {

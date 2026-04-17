@@ -16,25 +16,25 @@ import {
 } from '@/types/about'
 import { baseFetcher } from '@/api/base'
 import { mapResponse, mapGreetingResponseToGreeting } from '@/utils/mapper'
-import { circIn } from 'framer-motion'
-// import { aw } from 'framer-motion/dist/types.d-B50aGbjN'
+
+const siteUrl = process.env.NEXT_PUBLIC_SITE_URL || 'https://i-fa.or.kr'
 
 export async function getBaseInformation(): Promise<BaseInformation> {
   const response = await baseFetcher<BaseInformationResponse>(
-    'https://i-fa.or.kr//api/base-information',
+    `${siteUrl}/api/base-information`,
   )
   return mapResponse<BaseInformation, BaseInformationResponse>(response)
 }
 
 export async function getContactInformation(): Promise<ContactInformation> {
   const response = await baseFetcher<ContactInformationResponse>(
-    'https://i-fa.or.kr/api/contact-information',
+    `${siteUrl}/api/contact-information`,
   )
   return mapResponse<ContactInformation, ContactInformationResponse>(response)
 }
 
 export async function getGreeting(): Promise<Greeting> {
-  const response = await baseFetcher<GreetingResponse>('https://i-fa.or.kr/api/greeting')
+  const response = await baseFetcher<GreetingResponse>(`${siteUrl}/api/greeting`)
   return mapGreetingResponseToGreeting(response)
 }
 //수정 해야하는 부분
@@ -57,10 +57,6 @@ export async function getOrganization(): Promise<Organization> {
 }
 
 export async function getCorporationIdentity(): Promise<CorporationIdentity> {
-  const response = await baseFetcher<CorporationIdentityResponse>(`https://i-fa.or.kr/api/corporation-identity`)
+  const response = await baseFetcher<CorporationIdentityResponse>(`${siteUrl}/api/corporation-identity`)
   return mapResponse<CorporationIdentity, CorporationIdentityResponse>(response)
 }
-// export async function getCorporationIdentity(): Promise<CorporationIdentity> {
-//   const response = await baseFetcher<CorporationIdentityResponse>('http://localhost:3000/api/corporation-identity',)
-//   return mapResponse<CorporationIdentity, CorporationIdentityResponse>(response)
-// }

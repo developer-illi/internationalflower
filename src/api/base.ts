@@ -13,9 +13,8 @@ export async function baseFetcher<T>(endPoint: string): Promise<T> {
         'Content-Type': 'application/json',
       },
       next: {
-        revalidate: 60 * 60 * 24,
+        revalidate: 60 * 60,
       },
-      cache: 'no-cache',
     })
 
     if (!response.ok) {

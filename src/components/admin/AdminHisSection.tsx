@@ -35,7 +35,7 @@ const AdminHisSection = ({ history }: HistorySectionProps) => {
     }
 
     try {
-      const response = await fetch(`http://127.0.0.1:8000/history_arter/${id}`, {
+      const response = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/history_update/${id}`, {
         method: 'POST',
         body: formData,
       })
@@ -77,8 +77,8 @@ const AdminHisSection = ({ history }: HistorySectionProps) => {
     if (!confirmDelete) return  // 취소한 경우 함수 종료
 
     try {
-      const response = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/history_del/${id}`, {
-        method: 'POST',
+      const response = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/history_delete/${id}`, {
+        method: 'DELETE',
       })
 
       if (!response.ok) throw new Error('삭제 요청 실패')
