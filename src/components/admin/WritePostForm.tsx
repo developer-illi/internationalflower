@@ -10,7 +10,7 @@ export default function WritePostForm() {
   const router = useRouter()
   const [title, setTitle] = useState('')
   const [subTitle, setSubTitle] = useState('')
-  const [category, setCategory] = useState('recent')
+  const [category, setCategory] = useState('issues')
   const [content, setContent] = useState('')
   const [selectedImage, setSelectedImage] = useState<File | null>(null)
 
