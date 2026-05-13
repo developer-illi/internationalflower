@@ -8,9 +8,12 @@ import ControllableCarousel from '@/components/carousel/ControllableCarousel'
 import DraggableCarousel from '@/components/carousel/DraggableCarousel'
 import DomesticImgAdd from '@/components/admin/business/domestic/DomesticImgAdd'
 import GalleryCard from '@/components/card/GalleryCard'
+import DeleteExhibitionButton from '@/components/admin/business/exhibition/DeleteExhibitionButton'
+import DeleteExhibitionContentButton from '@/components/admin/business/exhibition/DeleteExhibitionContentButton'
 import { Exhibition, GalleryItem } from '@/types/business'
 import { useState } from 'react'
 import Image from 'next/image'
+import Link from 'next/link'
 import { motion } from 'framer-motion'
 
 interface ExhibitionsPaginationProps {
@@ -27,6 +30,9 @@ const ExhibitionsPagination = ({ data, isLoggedIn, type }: ExhibitionsPagination
     setSelectedItem(item)
     setIsModalOpen(true)
   }
+
+  const exhibitionType = type === 'domestic' ? 'domestic' : 'international'
+
   return (
     <>
       <motion.div
@@ -35,12 +41,28 @@ const ExhibitionsPagination = ({ data, isLoggedIn, type }: ExhibitionsPagination
         transition={{ duration: 0.8, delay: 0.4 }}
         className="py-8 flex flex-col gap-y-10 md:gap-y-14"
       >
-
-        <TitleWithContent
-          title={data.title}
-          subTitle={data.subTitle}
-          content={data.content}
-        />
+        <div className="flex flex-col md:flex-row md:items-start md:justify-between gap-4">
+          <TitleWithContent
+            title={data.title}
+            subTitle={data.subTitle}
+            content={data.content}
+          />
+          {isLoggedIn && (
+            <div className="flex gap-2 shrink-0">
+              <Link
+                href={`/business/${exhibitionType}/edit/${data.id}`}
+                className="px-3 py-1.5 text-sm bg-[#E34798] text-white rounded hover:bg-opacity-90"
+              >
+                탭 수정
+              </Link>
+              <DeleteExhibitionButton
+                id={data.id}
+                type={exhibitionType}
+                childCount={data.galleryList.length}
+              />
+            </div>
+          )}
+        </div>
         <HorizontalDivider />
 
         {/* Desktop Carousel */}
@@ -66,13 +88,20 @@ const ExhibitionsPagination = ({ data, isLoggedIn, type }: ExhibitionsPagination
         </DraggableCarousel>
         <Pagination fixedTop={isLoggedIn ? <DomesticImgAdd id={data.id} type={type} /> : undefined}>
           {data.galleryList.map((item) => (
-            <GalleryCard
-              key={item.id}
-              image={item.image}
-              title={item.title}
-              date={item.date}
-              onClick={() => handleCardClick(item)}
-            />
+            <div key={item.id} className="relative group">
+              <GalleryCard
+                image={item.image}
+                title={item.title}
+                date={item.date}
+                onClick={() => handleCardClick(item)}
+              />
+              {isLoggedIn && (
+                <DeleteExhibitionContentButton
+                  contentId={item.id}
+                  type={exhibitionType}
+                />
+              )}
+            </div>
           ))}
         </Pagination>
       </motion.div>

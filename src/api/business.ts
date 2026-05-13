@@ -83,3 +83,55 @@ export async function deleteActivityContent(id: number): Promise<void> {
   })
   if (!response.ok) throw new Error(`API error ${response.status}`)
 }
+
+// 국내전시
+export async function updateDomestic(id: number, formData: FormData): Promise<void> {
+  const response = await fetch(`${apiUrl}/domestic_update/${id}`, {
+    method: 'PATCH',
+    body: formData,
+  })
+  if (!response.ok) throw new Error(`API error ${response.status}`)
+}
+
+export async function deleteDomestic(id: number): Promise<void> {
+  const response = await fetch(`${apiUrl}/domestic_delete/${id}`, { method: 'DELETE' })
+  if (!response.ok) throw new Error(`API error ${response.status}`)
+}
+
+export async function deleteDomesticContent(id: number): Promise<void> {
+  const response = await fetch(`${apiUrl}/domestic_content_delete/${id}`, { method: 'DELETE' })
+  if (!response.ok) throw new Error(`API error ${response.status}`)
+}
+
+// 국외전시
+export async function updateOverseas(id: number, formData: FormData): Promise<void> {
+  const response = await fetch(`${apiUrl}/overseas_update/${id}`, {
+    method: 'PATCH',
+    body: formData,
+  })
+  if (!response.ok) throw new Error(`API error ${response.status}`)
+}
+
+export async function deleteOverseas(id: number): Promise<void> {
+  const response = await fetch(`${apiUrl}/overseas_delete/${id}`, { method: 'DELETE' })
+  if (!response.ok) throw new Error(`API error ${response.status}`)
+}
+
+export async function deleteOverseasContent(id: number): Promise<void> {
+  const response = await fetch(`${apiUrl}/overseas_content_delete/${id}`, { method: 'DELETE' })
+  if (!response.ok) throw new Error(`API error ${response.status}`)
+}
+
+// 자격증
+export async function updateCertification(id: number, formData: FormData): Promise<void> {
+  const response = await fetch(`${apiUrl}/license_update/${id}`, {
+    method: 'PATCH',
+    body: formData,
+  })
+  if (!response.ok) throw new Error(`API error ${response.status}`)
+}
+
+export async function deleteCertification(id: number): Promise<void> {
+  const response = await fetch(`${apiUrl}/license_delete/${id}`, { method: 'DELETE' })
+  if (!response.ok) throw new Error(`API error ${response.status}`)
+}

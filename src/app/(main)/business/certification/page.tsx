@@ -65,7 +65,7 @@ export default async function Certification({
           <TabBar activeTab={activeTab} tabList={tabList} />
         </FadeInSection>
 
-        <CertificationContent data={activeTabData} />
+        <CertificationContent data={activeTabData} isLoggedIn={isLoggedIn} />
       </section>
     </div>
   )

@@ -4,14 +4,17 @@ import HorizontalDivider from '@/components/common/HorizontalDivider'
 import TitleWithContent from '@/components/common/TitleWithContent'
 import LinkButton from '@/components/button/LinkButton'
 import Image from 'next/image'
+import Link from 'next/link'
 import { motion } from 'framer-motion'
 import { Certification } from '@/types/business'
+import DeleteCertificationButton from '@/components/admin/business/certification/DeleteCertificationButton'
 
 interface CertificationContentProps {
   data?: Certification
+  isLoggedIn?: boolean
 }
 
-const CertificationContent = ({ data }: CertificationContentProps) => {
+const CertificationContent = ({ data, isLoggedIn = false }: CertificationContentProps) => {
   if (!data) return null
   return (
     <motion.div
@@ -20,7 +23,20 @@ const CertificationContent = ({ data }: CertificationContentProps) => {
       transition={{ duration: 0.8, delay: 0.4 }}
       className={`py-8 flex flex-col gap-y-10 md:gap-y-14`}
     >
-      <TitleWithContent title={data.title} content={data.content} />
+      <div className="flex flex-col md:flex-row md:items-start md:justify-between gap-4">
+        <TitleWithContent title={data.title} content={data.content} />
+        {isLoggedIn && (
+          <div className="flex gap-2 shrink-0">
+            <Link
+              href={`/business/certification/edit/${data.id}`}
+              className="px-3 py-1.5 text-sm bg-[#E34798] text-white rounded hover:bg-opacity-90"
+            >
+              탭 수정
+            </Link>
+            <DeleteCertificationButton id={data.id} />
+          </div>
+        )}
+      </div>
       <HorizontalDivider />
       <div className="grid grid-cols-1 md:grid-cols-2 grid-rows-1 gap-4">
         <Image
