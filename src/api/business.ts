@@ -45,3 +45,41 @@ export async function getActivityDetail(id: number): Promise<ActivityDetail> {
   )
   return mapResponse<ActivityDetail, ActivityDetailResponse>(response)
 }
+
+const apiUrl = process.env.NEXT_PUBLIC_API_URL || ''
+
+export async function updateActivity(
+  id: number,
+  formData: FormData,
+): Promise<void> {
+  const response = await fetch(`${apiUrl}/activity_update/${id}`, {
+    method: 'PATCH',
+    body: formData,
+  })
+  if (!response.ok) throw new Error(`API error ${response.status}`)
+}
+
+export async function deleteActivity(id: number): Promise<void> {
+  const response = await fetch(`${apiUrl}/activity_delete/${id}`, {
+    method: 'DELETE',
+  })
+  if (!response.ok) throw new Error(`API error ${response.status}`)
+}
+
+export async function updateActivityContent(
+  id: number,
+  formData: FormData,
+): Promise<void> {
+  const response = await fetch(`${apiUrl}/acticontent_update/${id}`, {
+    method: 'PATCH',
+    body: formData,
+  })
+  if (!response.ok) throw new Error(`API error ${response.status}`)
+}
+
+export async function deleteActivityContent(id: number): Promise<void> {
+  const response = await fetch(`${apiUrl}/acticontent_delete/${id}`, {
+    method: 'DELETE',
+  })
+  if (!response.ok) throw new Error(`API error ${response.status}`)
+}

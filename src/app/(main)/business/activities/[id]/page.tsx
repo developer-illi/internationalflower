@@ -1,9 +1,12 @@
 import DetailLayout from '@/components/layout/DetailLayout'
 import Image from 'next/image'
+import Link from 'next/link'
 import { getActivity, getActivityDetail } from '@/api/business'
 import { redirect } from 'next/navigation'
 import { Metadata } from 'next'
 import { removeHtmlTags } from '@/utils/html'
+import { cookies } from 'next/headers'
+import DeleteActivityContentButton from '@/components/admin/business/activities/DeleteActivityContentButton'
 // import { ac } from 'framer-motion/dist/types.d-B50aGbjN'
 interface ActivitiesDetailProps {
   params: Promise<{
@@ -62,6 +65,8 @@ export default async function ActivitiesDetail({
   params,
 }: ActivitiesDetailProps) {
   const { id } = await params
+  const cookieStore = await cookies()
+  const isLoggedIn = cookieStore.get('auth_token')?.value === 'authenticated'
 
   try {
     const data = await getActivityDetail(Number(id))
@@ -76,9 +81,26 @@ export default async function ActivitiesDetail({
             className="w-full h-auto max-h-[270px] object-cover"
           />
           <div className="flex flex-col gap-y-4">
-            <h3 className="text-3xl leading-10 font-semibold break-keep">
-              {data.title}
-            </h3>
+            <div className="flex items-start justify-between gap-3">
+              <h3 className="text-3xl leading-10 font-semibold break-keep">
+                {data.title}
+              </h3>
+              {isLoggedIn && (
+                <div className="flex gap-2 shrink-0">
+                  <Link
+                    href={`/business/activities/${id}/edit`}
+                    className="px-3 py-1.5 text-sm bg-[#E34798] text-white rounded hover:bg-opacity-90"
+                  >
+                    수정
+                  </Link>
+                  <DeleteActivityContentButton
+                    contentId={Number(id)}
+                    redirectTo="/business/activities"
+                    variant="inline"
+                  />
+                </div>
+              )}
+            </div>
             <table className="text-base font-normal">
               <tbody className="**:py-1">
                 <tr>
