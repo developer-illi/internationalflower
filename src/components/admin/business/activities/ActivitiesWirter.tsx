@@ -48,11 +48,22 @@ export default function ActivitiesWritePage() {
         method: 'POST',
         body: formData,
       })
+      if (!res.ok) {
+        const errText = await res.text()
+        console.error('이미지 업로드 실패:', res.status, errText)
+        alert(`이미지 업로드 실패 (${res.status})`)
+        return
+      }
       const data = await res.json()
-      const imageUrl = data.url
-      editor?.chain().focus().setImage({ src: imageUrl }).run()
+      if (!data?.url) {
+        console.error('이미지 업로드 응답에 url 없음:', data)
+        alert('이미지 업로드 응답이 올바르지 않습니다.')
+        return
+      }
+      editor?.chain().focus().setImage({ src: data.url }).run()
     } catch (err) {
       console.error('이미지 업로드 실패:', err)
+      alert('이미지 업로드 중 오류가 발생했습니다.')
     }
   }, [editor])
 
