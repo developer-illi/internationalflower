@@ -18,22 +18,18 @@ export default async function EditActivityPage({
   const { id } = await params
   const numericId = Number(id)
 
-  try {
-    const list = await getActivity()
-    const target = list.find((item) => item.id === numericId)
-    if (!target) redirect('/business/activities')
+  const list = await getActivity().catch(() => [])
+  const target = list.find((item) => item.id === numericId)
+  if (!target) redirect('/business/activities')
 
-    return (
-      <EditActivityForm
-        id={numericId}
-        initialData={{
-          title: target.title,
-          content: target.content,
-          headerImage: target.headerImage,
-        }}
-      />
-    )
-  } catch {
-    redirect('/business/activities')
-  }
+  return (
+    <EditActivityForm
+      id={numericId}
+      initialData={{
+        title: target.title,
+        content: target.content,
+        headerImage: target.headerImage,
+      }}
+    />
+  )
 }
