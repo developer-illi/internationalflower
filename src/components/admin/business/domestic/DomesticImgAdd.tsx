@@ -2,10 +2,16 @@
 
 import React, { useState } from 'react'
 import { useRouter } from 'next/navigation'
+import { revalidateContent } from '@/app/actions/revalidate'
+import { CONTENT_TAGS } from '@/constants/cache'
+import { throwIfNotOk, toUserMessage } from '@/utils/error'
+import ImageFormatNotice from '@/components/admin/ImageFormatNotice'
+import { IMAGE_ACCEPT } from '@/constants/upload'
+import { ExhibitionType } from '@/types/business'
 
 interface GalleryCardAddProps {
   id: number
-  type: string
+  type: ExhibitionType
 }
 
 const DomesticImgAdd = ({ id, type }: GalleryCardAddProps) => {
@@ -42,15 +48,16 @@ const DomesticImgAdd = ({ id, type }: GalleryCardAddProps) => {
           body: formData,
         })
       }
-      if (!res.ok) throw new Error('저장 실패')
+      await throwIfNotOk(res, '사진 등록에 실패했습니다.')
 
+      await revalidateContent(CONTENT_TAGS.exhibition)
       alert('저장되었습니다.')
       resetForm()
       setIsModalOpen(false)
       router.refresh()
     } catch (err) {
       console.error(err)
-      alert('저장 중 오류가 발생했습니다.')
+      alert(toUserMessage(err, '저장 중 오류가 발생했습니다.'))
     }
   }
 
@@ -91,10 +98,11 @@ const DomesticImgAdd = ({ id, type }: GalleryCardAddProps) => {
               />
               <input
                 type="file"
-                accept="image/*"
+                accept={IMAGE_ACCEPT}
                 onChange={(e) => setImageFile(e.target.files?.[0] || null)}
                 className="border p-2 rounded file:bg-[#E34798] file:text-white file:px-4 file:py-2 file:rounded file:border-none"
               />
+              <ImageFormatNotice />
 
               <div className="flex justify-end gap-2 mt-4">
                 <button

@@ -8,6 +8,7 @@ import CertificationContent from '@/components/certification/CertificationConten
 import { Metadata } from 'next'
 import {cookies} from 'next/headers'
 import LicenseAddModal from '@/components/admin/business/certification/LisenceAddBtn'
+import Empty from '@/components/common/Empty'
 
 interface CertificationPageProps {
   searchParams: Promise<{
@@ -28,6 +29,7 @@ export async function generateStaticParams() {
       tab: certification.title,
     }))
   } catch (error) {
+    console.error('자격증 정적 경로 생성 실패:', error)
     return []
   }
 
@@ -39,7 +41,10 @@ export default async function Certification({
   const cookieStore = await cookies()
   const authToken = cookieStore.get('auth_token')
   const isLoggedIn = authToken?.value === 'authenticated'
-  const certificationData = await getCertification().catch(() => [])
+  const certificationData = await getCertification().catch((error) => {
+    console.error('자격증 목록 조회 실패:', error)
+    return []
+  })
   const tabList = certificationData.map((certification) => certification.title)
   const { tab } = await searchParams
   const activeTab = tab ?? tabList[0]
@@ -47,8 +52,18 @@ export default async function Certification({
     certificationData.find(
       (certification) => certification.title === activeTab,
     ) ?? certificationData[0]
+  // 목록이 비었거나 백엔드 조회가 실패한 경우. 예전에는 null 을 반환해
+  // 페이지가 통째로 백지가 됐다. 최소한 안내와 등록 버튼은 남긴다.
   if (!activeTabData) {
-    return null
+    return (
+      <section className="container-layout flex flex-col gap-y-8 py-40">
+        <FadeInSection>
+          <Breadcrumb path={['주요사업', '자격증']} />
+        </FadeInSection>
+        {isLoggedIn && <LicenseAddModal />}
+        <Empty message="등록된 항목이 없습니다." />
+      </section>
+    )
   }
 
   return (

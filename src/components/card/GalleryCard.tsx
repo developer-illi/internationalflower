@@ -1,4 +1,5 @@
 import Image from 'next/image'
+import { formatDate } from '@/utils/date'
 
 interface GalleryCardProps {
   image: string
@@ -15,7 +16,7 @@ const GalleryCard = ({ image, title, date, onClick }: GalleryCardProps) => {
     >
       <div className="absolute inset-0 z-10 p-10 w-full h-full bg-black/40 flex flex-col gap-y-3 opacity-0 group-hover:opacity-100 transition-opacity duration-300">
         <p className="text-white text-2xl font-semibold">{title}</p>
-        <p className="text-white text-lg font-normal">{date}</p>
+        <p className="text-white text-lg font-normal">{formatDate(date)}</p>
       </div>
       <Image
         src={image}

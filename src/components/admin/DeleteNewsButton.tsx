@@ -1,6 +1,9 @@
 'use client'
 
 import { useRouter } from 'next/navigation'
+import { revalidateContent } from '@/app/actions/revalidate'
+import { CONTENT_TAGS } from '@/constants/cache'
+import { getApiErrorMessage } from '@/utils/error'
 
 interface DeleteNewsButtonProps {
   newsId: number | string
@@ -24,11 +27,11 @@ export default function DeleteNewsButton({ newsId }: DeleteNewsButtonProps) {
       })
 
       if (res.ok) {
+        await revalidateContent(CONTENT_TAGS.news)
         alert('삭제되었습니다.')
         router.refresh()
       } else {
-        const errorData = await res.json()
-        alert(errorData.detail || '삭제에 실패했습니다.')
+        alert(await getApiErrorMessage(res, '삭제에 실패했습니다.'))
       }
     } catch (error) {
       console.error('삭제 오류:', error)

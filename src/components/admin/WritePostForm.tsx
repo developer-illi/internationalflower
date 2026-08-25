@@ -5,6 +5,11 @@ import { useRouter } from 'next/navigation'
 import { EditorContent, useEditor } from '@tiptap/react'
 import StarterKit from '@tiptap/starter-kit'
 import Image from '@tiptap/extension-image'
+import { revalidateContent } from '@/app/actions/revalidate'
+import { CONTENT_TAGS } from '@/constants/cache'
+import { getApiErrorMessage, throwIfNotOk, toUserMessage } from '@/utils/error'
+import ImageFormatNotice from '@/components/admin/ImageFormatNotice'
+import { IMAGE_ACCEPT } from '@/constants/upload'
 
 export default function WritePostForm() {
   const router = useRouter()
@@ -41,9 +46,12 @@ export default function WritePostForm() {
         body: formData,
       })
       if (!res.ok) {
-        const errText = await res.text()
-        console.error('이미지 업로드 실패:', res.status, errText)
-        alert(`이미지 업로드 실패 (${res.status})`)
+        const message = await getApiErrorMessage(
+          res,
+          `이미지 업로드에 실패했습니다. (${res.status})`,
+        )
+        console.error('이미지 업로드 실패:', res.status, message)
+        alert(message)
         return
       }
       const data = await res.json()
@@ -100,15 +108,14 @@ export default function WritePostForm() {
         body: formData,
       })
 
-      if (!res.ok) {
-        throw new Error('업로드 실패')
-      }
+      await throwIfNotOk(res, '게시글 등록에 실패했습니다.')
 
+      await revalidateContent(CONTENT_TAGS.news)
       alert('게시글이 등록되었습니다!')
       router.push('/news')
     } catch (err) {
       console.error('게시글 업로드 실패:', err)
-      alert('업로드 중 문제가 발생했습니다.')
+      alert(toUserMessage(err, '업로드 중 문제가 발생했습니다.'))
     }
   }
 
@@ -172,11 +179,12 @@ export default function WritePostForm() {
             <input
               id="image-upload"
               type="file"
-              accept="image/*"
+              accept={IMAGE_ACCEPT}
               onChange={handleImageSelect}
               className="hidden"
             />
           </div>
+          <ImageFormatNotice />
           {selectedImage && (
             <p className="text-sm text-gray-500 mt-2">선택된 파일: {selectedImage.name}</p>
           )}

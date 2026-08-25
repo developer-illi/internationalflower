@@ -1,8 +1,13 @@
 'use client'
 
 import { useState } from 'react'
+import { useRouter } from 'next/navigation'
+import { revalidateContent } from '@/app/actions/revalidate'
+import { CONTENT_TAGS } from '@/constants/cache'
+import { getApiErrorMessage } from '@/utils/error'
 
 export default function History_modal() {
+  const router = useRouter()
   const [isOpen, setIsOpen] = useState(false)
   const [year, setYear] = useState('')
 
@@ -19,11 +24,13 @@ export default function History_modal() {
     })
 
     if (response.ok) {
+      await revalidateContent(CONTENT_TAGS.history)
       alert('등록 완료!')
       setIsOpen(false)
       setYear('')
+      router.refresh()
     } else {
-      alert('등록 실패')
+      alert(await getApiErrorMessage(response, '연혁 등록에 실패했습니다.'))
     }
   }
 

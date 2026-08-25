@@ -1,8 +1,17 @@
-export async function baseFetcher<T>(endPoint: string): Promise<T> {
-  const baseUrl =
-    process.env.NODE_ENV === 'development'
-      ? process.env.NEXT_PUBLIC_API_URL || ''
-      : process.env.NEXT_PUBLIC_API_URL || ''
+import { DEFAULT_REVALIDATE } from '@/constants/cache'
+
+export interface BaseFetcherOptions {
+  /** 쓰기 후 revalidateContent 로 무효화할 캐시 태그 */
+  tags?: string[]
+  /** 초 단위 TTL. false 면 태그 무효화 전까지 캐시를 유지한다. */
+  revalidate?: number | false
+}
+
+export async function baseFetcher<T>(
+  endPoint: string,
+  options: BaseFetcherOptions = {},
+): Promise<T> {
+  const baseUrl = process.env.NEXT_PUBLIC_API_URL || ''
 
   const url = endPoint.startsWith('http') ? endPoint : `${baseUrl}${endPoint}`
 
@@ -13,20 +22,18 @@ export async function baseFetcher<T>(endPoint: string): Promise<T> {
         'Content-Type': 'application/json',
       },
       next: {
-        revalidate: 60 * 60,
+        revalidate: options.revalidate ?? DEFAULT_REVALIDATE,
+        tags: options.tags,
       },
     })
 
     if (!response.ok) {
       const errorText = await response.text()
-      // console.error('❌ API 응답 에러:', response.status, errorText)
       throw new Error(`API error ${response.status}: ${errorText}`)
     }
 
-    const data = await response.json()
-    return data
-  } catch (error: any) {
-    // console.error('❌ Fetch 중 에러 발생:', error)
-    throw error  // 원래 에러를 그대로 다시 던짐
+    return (await response.json()) as T
+  } catch (error) {
+    throw error
   }
 }

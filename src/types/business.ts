@@ -6,6 +6,9 @@ export interface GalleryItem {
   image: string
 }
 
+/** 백엔드가 허용하는 전시 구분. 그 외 값은 400 을 반환한다. */
+export type ExhibitionType = 'domestic' | 'international'
+
 export interface Exhibition {
   id: number
   title: string

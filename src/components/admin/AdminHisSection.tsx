@@ -4,6 +4,11 @@ import { useState } from 'react'
 import { History } from '@/types/about'
 import Title from '@/components/common/Title'
 import Image from 'next/image'
+import { revalidateContent } from '@/app/actions/revalidate'
+import { CONTENT_TAGS } from '@/constants/cache'
+import { throwIfNotOk, toUserMessage } from '@/utils/error'
+import ImageFormatNotice from '@/components/admin/ImageFormatNotice'
+import { IMAGE_ACCEPT } from '@/constants/upload'
 
 interface HistorySectionProps {
   history: History
@@ -40,7 +45,7 @@ const AdminHisSection = ({ history }: HistorySectionProps) => {
         body: formData,
       })
 
-      if (!response.ok) throw new Error('수정 요청 실패')
+      await throwIfNotOk(response, '연혁 수정에 실패했습니다.')
 
       const data = await response.json()  // { id, content, img }
 
@@ -66,9 +71,11 @@ const AdminHisSection = ({ history }: HistorySectionProps) => {
       })
       setEditingEventId(null)
 
+      await revalidateContent(CONTENT_TAGS.history)
       alert('수정되었습니다.')
     } catch (error) {
       console.error('에러 발생:', error)
+      alert(toUserMessage(error, '연혁 수정 중 오류가 발생했습니다.'))
     }
   }
 
@@ -81,7 +88,7 @@ const AdminHisSection = ({ history }: HistorySectionProps) => {
         method: 'DELETE',
       })
 
-      if (!response.ok) throw new Error('삭제 요청 실패')
+      await throwIfNotOk(response, '연혁 삭제에 실패했습니다.')
 
       const updated = localContents.map((item) => ({
         ...item,
@@ -101,9 +108,11 @@ const AdminHisSection = ({ history }: HistorySectionProps) => {
       })
       setEditingEventId(null)
 
+      await revalidateContent(CONTENT_TAGS.history)
       alert('삭제되었습니다.')
     } catch (error) {
       console.error('에러 발생:', error)
+      alert(toUserMessage(error, '연혁 삭제 중 오류가 발생했습니다.'))
     }
   }
 
@@ -136,13 +145,14 @@ const AdminHisSection = ({ history }: HistorySectionProps) => {
                           />
                           <input
                             type="file"
-                            accept="image/*"
+                            accept={IMAGE_ACCEPT}
                             onChange={(e) => {
                               const file = e.target.files?.[0] || null
                               handleImageChange(String(event.id), file)
                             }}
                             className="text-sm"
                           />
+                          <ImageFormatNotice />
                           <button
                             onClick={() => handleSave(String(event.id))}
                             className="text-blue-500 text-sm"

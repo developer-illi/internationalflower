@@ -3,6 +3,11 @@
 import { useState } from 'react'
 import { useRouter } from 'next/navigation'
 import { updateCertification } from '@/api/business'
+import { revalidateContent } from '@/app/actions/revalidate'
+import { CONTENT_TAGS } from '@/constants/cache'
+import { toUserMessage } from '@/utils/error'
+import ImageFormatNotice from '@/components/admin/ImageFormatNotice'
+import { IMAGE_ACCEPT } from '@/constants/upload'
 
 interface EditCertificationFormProps {
   id: number
@@ -46,11 +51,12 @@ export default function EditCertificationForm({
 
     try {
       await updateCertification(id, formData)
+      await revalidateContent(CONTENT_TAGS.license)
       alert('수정되었습니다!')
       router.push('/business/certification')
       router.refresh()
-    } catch {
-      alert('수정 중 오류가 발생했습니다.')
+    } catch (err) {
+      alert(toUserMessage(err, '수정 중 오류가 발생했습니다.'))
     }
   }
 
@@ -111,9 +117,10 @@ export default function EditCertificationForm({
           )}
           <input
             type="file"
-            accept="image/*"
+            accept={IMAGE_ACCEPT}
             onChange={(e) => setHeaderImage(e.target.files?.[0] || null)}
           />
+          <ImageFormatNotice />
         </div>
 
         <div className="px-6 py-4 border-b">
@@ -125,9 +132,10 @@ export default function EditCertificationForm({
           )}
           <input
             type="file"
-            accept="image/*"
+            accept={IMAGE_ACCEPT}
             onChange={(e) => setSubImage(e.target.files?.[0] || null)}
           />
+          <ImageFormatNotice />
         </div>
 
         <div className="flex justify-end gap-3 px-6 py-4 border-t bg-gray-50">

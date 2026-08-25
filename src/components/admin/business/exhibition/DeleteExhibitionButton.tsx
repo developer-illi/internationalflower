@@ -2,6 +2,9 @@
 
 import { useRouter } from 'next/navigation'
 import { deleteDomestic, deleteOverseas } from '@/api/business'
+import { revalidateContent } from '@/app/actions/revalidate'
+import { CONTENT_TAGS } from '@/constants/cache'
+import { toUserMessage } from '@/utils/error'
 
 interface DeleteExhibitionButtonProps {
   id: number
@@ -36,12 +39,13 @@ export default function DeleteExhibitionButton({
       } else {
         await deleteOverseas(id)
       }
+      await revalidateContent(CONTENT_TAGS.exhibition)
       alert('삭제되었습니다.')
       router.push(`/business/${type}`)
       router.refresh()
     } catch (error) {
       console.error('삭제 오류:', error)
-      alert('삭제 중 오류가 발생했습니다.')
+      alert(toUserMessage(error, '삭제 중 오류가 발생했습니다.'))
     }
   }
 

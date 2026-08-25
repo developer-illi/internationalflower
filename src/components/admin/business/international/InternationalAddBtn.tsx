@@ -2,6 +2,11 @@
 
 import React, { useState } from 'react'
 import { useRouter } from 'next/navigation'
+import { revalidateContent } from '@/app/actions/revalidate'
+import { CONTENT_TAGS } from '@/constants/cache'
+import { getApiErrorMessage } from '@/utils/error'
+import ImageFormatNotice from '@/components/admin/ImageFormatNotice'
+import { IMAGE_ACCEPT } from '@/constants/upload'
 
 export default function InternationalModal() {
   const router = useRouter()
@@ -35,12 +40,13 @@ export default function InternationalModal() {
     })
 
     if (response.ok) {
+      await revalidateContent(CONTENT_TAGS.exhibition)
       alert('등록 완료!')
       resetForm()
       setIsOpen(false)
       router.refresh()
     } else {
-      alert('등록 실패')
+      alert(await getApiErrorMessage(response, '해외전시 등록에 실패했습니다.'))
     }
   }
 
@@ -138,10 +144,11 @@ function MyModal({
 
           <input
             type="file"
-            accept="image/*"
+            accept={IMAGE_ACCEPT}
             onChange={(e) => setImage(e.target.files?.[0] || null)}
             className="border p-2 rounded file:bg-[#E34798] file:text-white file:px-4 file:py-2 file:rounded file:border-none"
           />
+          <ImageFormatNotice />
 
           <div className="flex justify-end gap-2 mt-2">
             <button

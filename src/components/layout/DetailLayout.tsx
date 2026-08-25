@@ -15,9 +15,16 @@ interface DetailLayoutProps {
   children: React.ReactNode
   htmlContent: string
   href: string
+  /** 본문 아래에 덧붙일 영역 (공지 첨부파일 등) */
+  footer?: React.ReactNode
 }
 
-const DetailLayout = ({ children, htmlContent, href }: DetailLayoutProps) => {
+const DetailLayout = ({
+  children,
+  htmlContent,
+  href,
+  footer,
+}: DetailLayoutProps) => {
   return (
     <section className="mt-24 mb-40 container-layout flex flex-col items-center gap-y-12">
       <FadeInSection>
@@ -38,6 +45,12 @@ const DetailLayout = ({ children, htmlContent, href }: DetailLayoutProps) => {
           className="w-full container-content !max-w-full prose"
         />
       </FadeInSection>
+
+      {footer && (
+        <FadeInSection delay={4} className="w-full container-content">
+          {footer}
+        </FadeInSection>
+      )}
 
       <FadeInSection delay={4}>
         <HorizontalDivider />

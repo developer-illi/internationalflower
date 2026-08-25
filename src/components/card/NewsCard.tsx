@@ -3,6 +3,7 @@ import Link from 'next/link'
 import Tag from '@/components/common/Tag'
 import { News } from '@/types/news'
 import { convertTypeToLabel } from '@/utils/news'
+import { formatDate } from '@/utils/date'
 
 interface NewsCardProps {
   news: News
@@ -23,7 +24,7 @@ const NewsCard = ({ news }: NewsCardProps) => {
           <p className="line-clamp-1 relative w-fit underline-animation underline-thick">
             {news.content}
           </p>
-          <p>{news.date}</p>
+          <p>{formatDate(news.date)}</p>
         </div>
       </div>
       <div className="relative w-full aspect-[3/2] overflow-hidden">

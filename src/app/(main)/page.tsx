@@ -7,6 +7,13 @@ import VerticalNoticeList from '@/components/notice/VerticalNoticeList'
 import HeroSection from '@/components/main/HeroSection'
 import NewsList from '@/components/main/NewsList'
 
+/**
+ * 메인은 공지·소식 섹션을 서버에서 렌더링한다. 기본값(정적 프리렌더)으로 두면
+ * 글을 올려도 stale-while-revalidate 로 옛 HTML 이 계속 나가므로 TTL 을 명시한다.
+ * 글 등록 직후에는 revalidateContent 가 즉시 무효화한다.
+ */
+export const revalidate = 300
+
 export default function Home() {
 
   return (

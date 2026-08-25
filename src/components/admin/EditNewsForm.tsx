@@ -6,6 +6,11 @@ import { EditorContent, useEditor } from '@tiptap/react'
 import StarterKit from '@tiptap/starter-kit'
 import Image from '@tiptap/extension-image'
 import { updateNews } from '@/api/news'
+import { revalidateContent } from '@/app/actions/revalidate'
+import { CONTENT_TAGS } from '@/constants/cache'
+import { getApiErrorMessage, toUserMessage } from '@/utils/error'
+import ImageFormatNotice from '@/components/admin/ImageFormatNotice'
+import { IMAGE_ACCEPT } from '@/constants/upload'
 
 interface EditNewsFormProps {
   id: number
@@ -48,9 +53,12 @@ export default function EditNewsForm({ id, initialData }: EditNewsFormProps) {
         body: formData,
       })
       if (!res.ok) {
-        const errText = await res.text()
-        console.error('이미지 업로드 실패:', res.status, errText)
-        alert(`이미지 업로드 실패 (${res.status})`)
+        const message = await getApiErrorMessage(
+          res,
+          `이미지 업로드에 실패했습니다. (${res.status})`,
+        )
+        console.error('이미지 업로드 실패:', res.status, message)
+        alert(message)
         return
       }
       const data = await res.json()
@@ -87,11 +95,12 @@ export default function EditNewsForm({ id, initialData }: EditNewsFormProps) {
 
     try {
       await updateNews(id, formData)
+      await revalidateContent(CONTENT_TAGS.news)
       alert('수정되었습니다!')
       router.push(`/news/${id}`)
       router.refresh()
-    } catch {
-      alert('수정 중 오류가 발생했습니다.')
+    } catch (err) {
+      alert(toUserMessage(err, '수정 중 오류가 발생했습니다.'))
     }
   }
 
@@ -151,10 +160,11 @@ export default function EditNewsForm({ id, initialData }: EditNewsFormProps) {
           <input
             id="image-upload"
             type="file"
-            accept="image/*"
+            accept={IMAGE_ACCEPT}
             onChange={(e) => setSelectedImage(e.target.files?.[0] || null)}
             className="hidden"
           />
+          <ImageFormatNotice />
           {selectedImage && (
             <p className="text-sm text-gray-500 mt-2">선택된 파일: {selectedImage.name}</p>
           )}

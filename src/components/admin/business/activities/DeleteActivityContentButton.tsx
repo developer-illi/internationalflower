@@ -2,6 +2,9 @@
 
 import { useRouter } from 'next/navigation'
 import { deleteActivityContent } from '@/api/business'
+import { revalidateContent } from '@/app/actions/revalidate'
+import { CONTENT_TAGS } from '@/constants/cache'
+import { toUserMessage } from '@/utils/error'
 
 interface DeleteActivityContentButtonProps {
   contentId: number
@@ -24,12 +27,13 @@ export default function DeleteActivityContentButton({
 
     try {
       await deleteActivityContent(contentId)
+      await revalidateContent(CONTENT_TAGS.activity)
       alert('삭제되었습니다.')
       if (redirectTo) router.push(redirectTo)
       router.refresh()
     } catch (error) {
       console.error('삭제 오류:', error)
-      alert('삭제 중 오류가 발생했습니다.')
+      alert(toUserMessage(error, '삭제 중 오류가 발생했습니다.'))
     }
   }
 

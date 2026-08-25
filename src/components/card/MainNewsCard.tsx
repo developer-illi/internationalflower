@@ -3,6 +3,7 @@ import Image from 'next/image'
 import Tag from '../common/Tag'
 import { News } from '@/types/news'
 import { convertTypeToLabel } from '@/utils/news'
+import { formatDate } from '@/utils/date'
 
 interface MainNewsCardProps {
   news: News
@@ -24,7 +25,7 @@ const MainNewsCard = ({ news }: MainNewsCardProps) => {
           {news.content}
         </p>
       </hgroup>
-      <p className="text-foreground font-light">{news.date}</p>
+      <p className="text-foreground font-light">{formatDate(news.date)}</p>
       <div className="relative aspect-[3/2] overflow-hidden">
         <Image
           src={news.image}

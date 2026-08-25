@@ -16,6 +16,7 @@ import {
 } from '@/types/about'
 import { baseFetcher } from '@/api/base'
 import { mapResponse, mapGreetingResponseToGreeting } from '@/utils/mapper'
+import { CONTENT_TAGS } from '@/constants/cache'
 
 const siteUrl = process.env.NEXT_PUBLIC_SITE_URL || 'https://i-fa.or.kr'
 
@@ -40,7 +41,9 @@ export async function getGreeting(): Promise<Greeting> {
 //수정 해야하는 부분
 export async function getHistory(): Promise<HistorySection[]> {
   try {
-    const response = await baseFetcher<HistoryResponse[]>('/history')
+    const response = await baseFetcher<HistoryResponse[]>('/history', {
+      tags: [CONTENT_TAGS.history],
+    })
     // console.log('✅ 응답:', response)
     return response.map((history) =>
       mapResponse<HistorySection, HistoryResponse>(history),
@@ -52,7 +55,9 @@ export async function getHistory(): Promise<HistorySection[]> {
 }
 
 export async function getOrganization(): Promise<Organization> {
-  const response = await baseFetcher<OrganizationResponse>('/organization')
+  const response = await baseFetcher<OrganizationResponse>('/organization', {
+    tags: [CONTENT_TAGS.organization],
+  })
   return mapResponse<Organization, OrganizationResponse>(response)
 }
 

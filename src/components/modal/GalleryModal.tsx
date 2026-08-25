@@ -4,6 +4,7 @@ import { motion } from 'framer-motion'
 import Image from 'next/image'
 import { GalleryItem } from '@/types/business'
 import Close from '@/assets/close.svg'
+import { formatDate } from '@/utils/date'
 
 interface GalleryModalProps {
   isOpen: boolean
@@ -48,7 +49,7 @@ const GalleryModal = ({ isOpen, onClose, item }: GalleryModalProps) => {
           <div className="flex-1 h-fit md:h-auto md:overflow-y-scroll scrollbar-none">
             <hgroup className="flex flex-col gap-x-4 mb-4">
               <h2 className="text-2xl font-bold md:mt-6 ">{item.title}</h2>
-              <h3 className="text-sm text-foreground/50">{item.date}</h3>
+              <h3 className="text-sm text-foreground/50">{formatDate(item.date)}</h3>
             </hgroup>
             <p className="text-sm text-foreground/50">{item.description}</p>
           </div>

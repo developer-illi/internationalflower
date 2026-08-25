@@ -7,6 +7,7 @@ import { Metadata } from 'next'
 import { removeHtmlTags } from '@/utils/html'
 import { cookies } from 'next/headers'
 import DeleteActivityContentButton from '@/components/admin/business/activities/DeleteActivityContentButton'
+import { formatDate } from '@/utils/date'
 // import { ac } from 'framer-motion/dist/types.d-B50aGbjN'
 interface ActivitiesDetailProps {
   params: Promise<{
@@ -105,7 +106,7 @@ export default async function ActivitiesDetail({
               <tbody className="**:py-1">
                 <tr>
                   <td>일자</td>
-                  <td>{data.date}</td>
+                  <td>{formatDate(data.date)}</td>
                 </tr>
                 <tr>
                   <td>장소</td>

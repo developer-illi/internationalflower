@@ -7,6 +7,11 @@ import { EditorContent, useEditor } from '@tiptap/react'
 import StarterKit from '@tiptap/starter-kit'
 import ImageExtension from '@tiptap/extension-image'
 import { updateActivityContent } from '@/api/business'
+import { revalidateContent } from '@/app/actions/revalidate'
+import { CONTENT_TAGS } from '@/constants/cache'
+import { getApiErrorMessage, toUserMessage } from '@/utils/error'
+import ImageFormatNotice from '@/components/admin/ImageFormatNotice'
+import { IMAGE_ACCEPT } from '@/constants/upload'
 
 interface EditActivityContentFormProps {
   id: number
@@ -73,9 +78,12 @@ export default function EditActivityContentForm({
           body: formData,
         })
         if (!res.ok) {
-          const errText = await res.text()
-          console.error('이미지 업로드 실패:', res.status, errText)
-          alert(`이미지 업로드 실패 (${res.status})`)
+          const message = await getApiErrorMessage(
+            res,
+            `이미지 업로드에 실패했습니다. (${res.status})`,
+          )
+          console.error('이미지 업로드 실패:', res.status, message)
+          alert(message)
           return
         }
         const data = await res.json()
@@ -124,12 +132,13 @@ export default function EditActivityContentForm({
 
     try {
       await updateActivityContent(id, formData)
+      await revalidateContent(CONTENT_TAGS.activity)
       alert('수정되었습니다!')
       router.push(`/business/activities/${id}`)
       router.refresh()
     } catch (err) {
       console.error(err)
-      alert('수정 중 오류가 발생했습니다.')
+      alert(toUserMessage(err, '수정 중 오류가 발생했습니다.'))
     } finally {
       setIsSubmitting(false)
     }
@@ -230,10 +239,11 @@ export default function EditActivityContentForm({
         <div className="flex flex-col md:flex-row md:justify-between md:items-center gap-4">
           <input
             type="file"
-            accept="image/*"
+            accept={IMAGE_ACCEPT}
             onChange={(e) => setImageFile(e.target.files?.[0] || null)}
             className="border p-2 rounded file:bg-[#E34798] file:text-white file:px-4 file:py-2 file:rounded file:border-none"
           />
+          <ImageFormatNotice />
           <div className="flex justify-end gap-2">
             <button
               type="button"

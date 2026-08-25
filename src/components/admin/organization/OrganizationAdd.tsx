@@ -2,6 +2,11 @@
 
 import { useState } from 'react'
 import { useRouter } from 'next/navigation'
+import { revalidateContent } from '@/app/actions/revalidate'
+import { CONTENT_TAGS } from '@/constants/cache'
+import { getApiErrorMessage } from '@/utils/error'
+import ImageFormatNotice from '@/components/admin/ImageFormatNotice'
+import { IMAGE_ACCEPT } from '@/constants/upload'
 
 export default function Organization_modal() {
   const [isOpen, setIsOpen] = useState(false)
@@ -55,11 +60,12 @@ function MyModal({ onClose }: { onClose: () => void }) {
     })
 
     if (response.ok) {
+      await revalidateContent(CONTENT_TAGS.organization)
       alert('등록 완료!')
       onClose() // 부모에서 모달 닫기
       router.refresh()
     } else {
-      alert('등록 실패')
+      alert(await getApiErrorMessage(response, '임원 등록에 실패했습니다.'))
     }
   }
 
@@ -99,7 +105,7 @@ function MyModal({ onClose }: { onClose: () => void }) {
             <input
               id="file-upload"
               type="file"
-              accept="image/*"
+              accept={IMAGE_ACCEPT}
               className="hidden"
               onChange={(e) => {
                 if (e.target.files && e.target.files[0]) {
@@ -107,6 +113,7 @@ function MyModal({ onClose }: { onClose: () => void }) {
                 }
               }}
             />
+            <ImageFormatNotice />
             <label
               htmlFor="file-upload"
               className="inline-block mt-2 bg-[#E34798] text-white px-4 py-2 rounded cursor-pointer hover:bg-pink-600 transition"

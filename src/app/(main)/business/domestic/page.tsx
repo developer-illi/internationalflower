@@ -8,6 +8,7 @@ import ExhibitionsPagination from '@/components/pagination/ExhibitionsPagination
 import FadeInSection from '@/components/motion/FadeInSection'
 import { Metadata } from 'next'
 import { cookies } from 'next/headers'
+import Empty from '@/components/common/Empty'
 
 interface DomesticExhibitionsProps {
   searchParams: Promise<{
@@ -28,6 +29,7 @@ export async function generateStaticParams() {
       tab: exhibition.title,
     }))
   } catch (error) {
+    console.error('국내전시 정적 경로 생성 실패:', error)
     return []
   }
 }
@@ -38,7 +40,10 @@ export default async function DomesticExhibitions({
   const cookieStore = await cookies()
   const authToken = cookieStore.get('auth_token')
   const isLoggedIn = authToken?.value === 'authenticated'
-  const exhibitionData = await getExhibition('domestic').catch(() => [])
+  const exhibitionData = await getExhibition('domestic').catch((error) => {
+    console.error('국내전시 목록 조회 실패:', error)
+    return []
+  })
   const tabList = exhibitionData.map((exhibition) => exhibition.title)
   const { tab } = await searchParams
   const type = 'domestic'
@@ -46,8 +51,18 @@ export default async function DomesticExhibitions({
   const activeTabData =
     exhibitionData.find((exhibition) => exhibition.title === activeTab) ??
     exhibitionData[0]
+  // 목록이 비었거나 백엔드 조회가 실패한 경우. 예전에는 null 을 반환해
+  // 페이지가 통째로 백지가 됐다. 최소한 안내와 등록 버튼은 남긴다.
   if (!activeTabData) {
-    return null
+    return (
+      <section className="container-layout flex flex-col gap-y-8 py-40">
+        <FadeInSection>
+          <Breadcrumb path={['주요사업', '국내전시행사']} />
+        </FadeInSection>
+        {isLoggedIn && <DomesticAddBtn />}
+        <Empty message="등록된 항목이 없습니다." />
+      </section>
+    )
   }
 
   return (

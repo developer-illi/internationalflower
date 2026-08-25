@@ -3,6 +3,11 @@
 import { useState } from 'react'
 import { useRouter } from 'next/navigation'
 import { updateActivity } from '@/api/business'
+import { revalidateContent } from '@/app/actions/revalidate'
+import { CONTENT_TAGS } from '@/constants/cache'
+import { toUserMessage } from '@/utils/error'
+import ImageFormatNotice from '@/components/admin/ImageFormatNotice'
+import { IMAGE_ACCEPT } from '@/constants/upload'
 
 interface EditActivityFormProps {
   id: number
@@ -30,11 +35,12 @@ export default function EditActivityForm({ id, initialData }: EditActivityFormPr
 
     try {
       await updateActivity(id, formData)
+      await revalidateContent(CONTENT_TAGS.activity)
       alert('수정되었습니다!')
       router.push('/business/activities')
       router.refresh()
-    } catch {
-      alert('수정 중 오류가 발생했습니다.')
+    } catch (err) {
+      alert(toUserMessage(err, '수정 중 오류가 발생했습니다.'))
     }
   }
 
@@ -83,10 +89,11 @@ export default function EditActivityForm({ id, initialData }: EditActivityFormPr
           <input
             id="activity-image-upload"
             type="file"
-            accept="image/*"
+            accept={IMAGE_ACCEPT}
             onChange={(e) => setSelectedImage(e.target.files?.[0] || null)}
             className="hidden"
           />
+          <ImageFormatNotice />
           {selectedImage && (
             <p className="text-sm text-gray-500 mt-2">선택된 파일: {selectedImage.name}</p>
           )}

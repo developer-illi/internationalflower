@@ -1,12 +1,19 @@
 'use client'
 
 import React, { useState, useCallback } from 'react'
+import { useRouter } from 'next/navigation'
+import { revalidateContent } from '@/app/actions/revalidate'
+import { CONTENT_TAGS } from '@/constants/cache'
+import { getApiErrorMessage } from '@/utils/error'
+import ImageFormatNotice from '@/components/admin/ImageFormatNotice'
+import { IMAGE_ACCEPT } from '@/constants/upload'
 
 interface HistoryContentProps {
   id: number
 }
 
 export default function History_content({ id }: HistoryContentProps) {
+  const router = useRouter()
   const [isOpen, setIsOpen] = useState(false)
   const [text, setText] = useState('')
   const [year, setYear] = useState('')
@@ -33,17 +40,19 @@ export default function History_content({ id }: HistoryContentProps) {
       })
 
       if (res.ok) {
+        await revalidateContent(CONTENT_TAGS.history)
         alert('등록 완료!')
         setIsOpen(false)
         setText('')
         setYear('')
         setMonth('')
         setImage(null)
+        router.refresh()
       } else {
-        alert('등록 실패')
+        alert(await getApiErrorMessage(res, '연혁 내용 등록에 실패했습니다.'))
       }
     },
-    [id, text, month, image]
+    [id, text, month, image, router]
   )
 
   return (
@@ -131,10 +140,11 @@ function MyModal({
 
           <input
             type="file"
-            accept="image/*"
+            accept={IMAGE_ACCEPT}
             onChange={(e) => setImage(e.target.files?.[0] || null)}
             className="border p-2 rounded"
           />
+          <ImageFormatNotice />
 
           <div className="flex justify-end gap-2 mt-4">
             <button

@@ -10,7 +10,7 @@ import DomesticImgAdd from '@/components/admin/business/domestic/DomesticImgAdd'
 import GalleryCard from '@/components/card/GalleryCard'
 import DeleteExhibitionButton from '@/components/admin/business/exhibition/DeleteExhibitionButton'
 import DeleteExhibitionContentButton from '@/components/admin/business/exhibition/DeleteExhibitionContentButton'
-import { Exhibition, GalleryItem } from '@/types/business'
+import { Exhibition, ExhibitionType, GalleryItem } from '@/types/business'
 import { useState } from 'react'
 import Image from 'next/image'
 import Link from 'next/link'
@@ -19,7 +19,7 @@ import { motion } from 'framer-motion'
 interface ExhibitionsPaginationProps {
   data: Exhibition
   isLoggedIn: boolean
-  type: string
+  type: ExhibitionType
 }
 
 const ExhibitionsPagination = ({ data, isLoggedIn, type }: ExhibitionsPaginationProps) => {
@@ -30,8 +30,6 @@ const ExhibitionsPagination = ({ data, isLoggedIn, type }: ExhibitionsPagination
     setSelectedItem(item)
     setIsModalOpen(true)
   }
-
-  const exhibitionType = type === 'domestic' ? 'domestic' : 'international'
 
   return (
     <>
@@ -50,14 +48,14 @@ const ExhibitionsPagination = ({ data, isLoggedIn, type }: ExhibitionsPagination
           {isLoggedIn && (
             <div className="flex gap-2 shrink-0">
               <Link
-                href={`/business/${exhibitionType}/edit/${data.id}`}
+                href={`/business/${type}/edit/${data.id}`}
                 className="px-3 py-1.5 text-sm bg-[#E34798] text-white rounded hover:bg-opacity-90"
               >
                 탭 수정
               </Link>
               <DeleteExhibitionButton
                 id={data.id}
-                type={exhibitionType}
+                type={type}
                 childCount={data.galleryList.length}
               />
             </div>
@@ -98,7 +96,7 @@ const ExhibitionsPagination = ({ data, isLoggedIn, type }: ExhibitionsPagination
               {isLoggedIn && (
                 <DeleteExhibitionContentButton
                   contentId={item.id}
-                  type={exhibitionType}
+                  type={type}
                 />
               )}
             </div>
