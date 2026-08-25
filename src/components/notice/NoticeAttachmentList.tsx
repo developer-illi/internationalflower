@@ -6,12 +6,13 @@ interface NoticeAttachmentListProps {
 }
 
 /**
- * 공지 첨부파일 목록.
- *
- * url 은 R2(pub-....r2.dev) 도메인이라 교차 출처다. 브라우저가 download 속성을
- * 무시하고 새 탭에서 여는 경우가 있는데(pdf·이미지), 그 편이 오히려 자연스럽고
- * hwp·zip 은 그대로 내려받아진다.
+ * 첨부 URL 은 R2 도메인이라 교차 출처이고, 그 경우 브라우저가 download 속성을
+ * 무시해 UUID 파일명으로 저장된다. 같은 출처의 프록시 라우트를 거쳐
+ * Content-Disposition 을 붙이면 원본 한글 파일명으로 받아진다.
  */
+const toDownloadUrl = (attachment: NoticeAttachment) =>
+  `/api/attachment?url=${encodeURIComponent(attachment.url)}&name=${encodeURIComponent(attachment.name)}`
+
 const NoticeAttachmentList = ({ attachments }: NoticeAttachmentListProps) => {
   if (attachments.length === 0) return null
 
@@ -24,10 +25,8 @@ const NoticeAttachmentList = ({ attachments }: NoticeAttachmentListProps) => {
         {attachments.map((attachment) => (
           <li key={attachment.id}>
             <a
-              href={attachment.url}
+              href={toDownloadUrl(attachment)}
               download={attachment.name}
-              target="_blank"
-              rel="noopener noreferrer"
               className="group flex items-baseline gap-2 text-sm hover:text-primary transition-colors"
             >
               <span className="break-all underline-offset-4 group-hover:underline">
